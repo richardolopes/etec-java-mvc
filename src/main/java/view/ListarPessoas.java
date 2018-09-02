@@ -20,18 +20,16 @@ public class ListarPessoas extends JFrame {
 	
 	JPanel panelPessoa = new JPanel();
 	JPanel panelTarefa = new JPanel();
-	
-	JLabel lblEmailPessoa = new JLabel("Procurar pessoa: ");
-	JTextField txtEmailPessoa = new JTextField();
-	
-	JButton procurar = new JButton("Procurar");
 
+	JLabel lblEmailPessoa = new JLabel("Pessoas: ");
+	
 	JLabel lblEmail = new JLabel("E-mail: ");
 	JLabel lblNome = new JLabel("Nome: ");
 	JLabel lblSexo = new JLabel("Sexo: ");
 	
-	JRadioButton rbMasculino = new JRadioButton("Masculino");
-	JRadioButton rbFeminino = new JRadioButton("Feminino");
+	JLabel txtEmail = new JLabel("");
+	JLabel txtNome = new JLabel("");
+	JLabel txtSexo = new JLabel("");
 	
 	// Tarefa
 	JLabel lblTarefas = new JLabel("Tarefas: ");
@@ -48,6 +46,7 @@ public class ListarPessoas extends JFrame {
 	JLabel txtDataTermino = new JLabel();
 	
 	JComboBox<String> cbTarefas = new JComboBox<String>();
+	JComboBox<String> cbPessoas = new JComboBox<String>();
 
 	public ListarPessoas() {
 		super(nomeJanela);
@@ -67,29 +66,58 @@ public class ListarPessoas extends JFrame {
 			//janelaAltura = (alturaPanel+distanciaSuperior)*2,
 			
 			//janelaLargura = (larguraPanel+distanciaLateral*2-g-g/3)*2;
-			janelaLargura = (larguraPanel+distanciaLateral)*2+distanciaLateral-g/2;
+			janelaLargura = ((larguraPanel+distanciaLateral)*2+distanciaLateral-g/2)-2;
+
+		//   <-------->
+		//   <-PESSOA->
+		//	 <-------->
+		panelPessoa.setLayout(null);
+		panelPessoa.setBorder(javax.swing.BorderFactory.createTitledBorder(nomeJanela));
+		panelPessoa.setBounds			(15, 10, larguraPanel, alturaPanel);
+		
+		lblEmailPessoa.setBounds		(distanciaLateral, distanciaSuperior*1, largura, altura);
+		cbPessoas.setBounds				(distanciaTXT, distanciaSuperior*1, largura, altura);
+		
+		lblEmail.setBounds				(distanciaLateral, distanciaSuperior*3, largura, altura);
+		lblNome.setBounds				(distanciaLateral, distanciaSuperior*4, largura, altura);
+		lblSexo.setBounds				(distanciaLateral, distanciaSuperior*5, largura, altura);
+		
+		txtEmail.setBounds				(distanciaTXT, distanciaSuperior*3, largura, altura);
+		txtNome.setBounds				(distanciaTXT, distanciaSuperior*4, largura, altura);
+		txtSexo.setBounds				(distanciaTXT, distanciaSuperior*5, largura, altura);
+		
+		panelPessoa.add(lblEmailPessoa);
+		panelPessoa.add(cbPessoas);
+		
+		panelPessoa.add(lblEmail);
+		panelPessoa.add(lblNome);
+		panelPessoa.add(lblSexo);
+		
+		panelPessoa.add(txtEmail);
+		panelPessoa.add(txtNome);
+		panelPessoa.add(txtSexo);
 		
 		//   <-------->
 		// 	 <-TAREFA->
 		//   <-------->
 		panelTarefa.setLayout(null);
 		panelTarefa.setBorder(javax.swing.BorderFactory.createTitledBorder("Tarefas"));
-		panelTarefa.setBounds			(15, 10, larguraPanel, alturaPanel);
+		panelTarefa.setBounds			(larguraPanel+15*2, 10, larguraPanel, alturaPanel);
 	
 		lblTarefas.setBounds			(distanciaLateral, distanciaSuperior*1, largura, altura);
-		lblTitulo.setBounds				(distanciaLateral, distanciaSuperior*2, largura, altura);
-		lblPrazoEstimado.setBounds		(distanciaLateral, distanciaSuperior*3, largura, altura);
-		lblDescricaoTarefa.setBounds	(distanciaLateral, distanciaSuperior*4, largura, altura);
-		lblDataInicio.setBounds			(distanciaLateral, distanciaSuperior*5, largura, altura);
-		lblDataTermino.setBounds		(distanciaLateral, distanciaSuperior*6, largura, altura);
+		lblTitulo.setBounds				(distanciaLateral, distanciaSuperior*3, largura, altura);
+		lblPrazoEstimado.setBounds		(distanciaLateral, distanciaSuperior*4, largura, altura);
+		lblDescricaoTarefa.setBounds	(distanciaLateral, distanciaSuperior*5, largura, altura);
+		lblDataInicio.setBounds			(distanciaLateral, distanciaSuperior*6, largura, altura);
+		lblDataTermino.setBounds		(distanciaLateral, distanciaSuperior*7, largura, altura);
 		
 		cbTarefas.setBounds				(distanciaTXT, distanciaSuperior*1, largura, altura);
 		
-		txtTitulo.setBounds				(distanciaTXT, distanciaSuperior*2, largura, altura);
-		txtPrazoEstimado.setBounds		(distanciaTXT, distanciaSuperior*3, largura, altura);	
-		txtDescricaoTarefa.setBounds	(distanciaTXT, distanciaSuperior*4, largura, altura);	
-		txtDataInicio.setBounds			(distanciaTXT, distanciaSuperior*5, largura, altura);
-		txtDataTermino.setBounds		(distanciaTXT, distanciaSuperior*6, largura, altura);
+		txtTitulo.setBounds				(distanciaTXT, distanciaSuperior*3, largura, altura);
+		txtPrazoEstimado.setBounds		(distanciaTXT, distanciaSuperior*4, largura, altura);	
+		txtDescricaoTarefa.setBounds	(distanciaTXT, distanciaSuperior*5, largura, altura);	
+		txtDataInicio.setBounds			(distanciaTXT, distanciaSuperior*6, largura, altura);
+		txtDataTermino.setBounds		(distanciaTXT, distanciaSuperior*7, largura, altura);
 	
 		panelTarefa.add(lblTarefas);
 		panelTarefa.add(lblTitulo);
@@ -105,11 +133,7 @@ public class ListarPessoas extends JFrame {
 		panelTarefa.add(txtDataTermino);
 		
 		panelTarefa.add(cbTarefas);
-		
-		panelPessoa.setLayout(null);
-		panelPessoa.setBorder(javax.swing.BorderFactory.createTitledBorder("Pessoas"));
-		panelPessoa.setBounds			(larguraPanel+15*2, 10, larguraPanel, alturaPanel);
-		
+
 		paine.add(panelTarefa);
 		paine.add(panelPessoa);
 

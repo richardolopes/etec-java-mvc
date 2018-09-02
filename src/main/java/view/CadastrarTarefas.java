@@ -64,7 +64,7 @@ public class CadastrarTarefas extends JFrame {
 			alturaPanel = distanciaSuperior*10-altura,
 			
 			janelaAltura = alturaPanel+distanciaSuperior*2-g/2,
-			janelaLargura = larguraPanel+distanciaLateral*2-g/4;
+			janelaLargura = (larguraPanel+distanciaLateral*2-g/4)-2;
 				
 		//   <-------->
 		// 	 <-TAREFA->

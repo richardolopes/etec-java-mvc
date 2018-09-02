@@ -13,7 +13,7 @@ import model.Pessoas;
 
 public class AppPessoas extends JFrame {
 	int i = 0;
-	static String nomeJanela = "Pessoas";
+	static String nomeJanela = "Pessoa";
 	static int errorDanger = 0;
 	static int errorInformation = 1;
 	static int errorWarning = 2;
@@ -22,7 +22,7 @@ public class AppPessoas extends JFrame {
 	JPanel panelPessoa = new JPanel();
 	JPanel panelDados = new JPanel();	
 	
-	JLabel lblEmailPessoa = new JLabel("Procurar pessoa: ");
+	JLabel lblEmailPessoa = new JLabel("Procurar " + nomeJanela + ": ");
 	JTextField txtEmailPessoa = new JTextField();
 	
 	JButton procurar = new JButton("Procurar");
@@ -42,10 +42,10 @@ public class AppPessoas extends JFrame {
 	
 	ButtonGroup grupoSexo = new ButtonGroup();
 
-	JButton deletarPessoa = new JButton("Excluir Pessoa");
-	JButton listarPessoas = new JButton("Listar Pessoas");
+	JButton deletarPessoa = new JButton("Excluir " + nomeJanela);
+	JButton listarPessoas = new JButton("Listar " + nomeJanela + "s");
 	JButton editarPessoa = new JButton("Editar");
-	JButton adicionarPessoa = new JButton("Cadastrar Pessoa");
+	JButton adicionarPessoa = new JButton("Cadastrar " + nomeJanela);
 
 	public AppPessoas() {
 		super(nomeJanela);
@@ -62,7 +62,7 @@ public class AppPessoas extends JFrame {
 			alturaPanel = distanciaSuperior*12-altura,
 					
 			janelaAltura = alturaPanel+distanciaSuperior*2-g/2,
-			janelaLargura = larguraPanel+distanciaLateral*2-g/4;
+			janelaLargura = (larguraPanel+distanciaLateral*2-g/4)-2;
 
 		//   <-------->
 		// 	 <-PESSOA->
@@ -77,9 +77,9 @@ public class AppPessoas extends JFrame {
 		panelDados.setLayout(null);
 		panelDados.setBorder(javax.swing.BorderFactory.createTitledBorder("Dados " + nomeJanela));
 		panelDados.setBounds			(distanciaLateral, distanciaSuperior*3, largura*2+distanciaLateral-g, altura*10);
+		
 
 		lblEmailPessoa.setBounds		(distanciaLateral, distanciaSuperior*1, largura, altura);
-		
 		txtEmailPessoa.setBounds		(distanciaTXT, distanciaSuperior*1, largura, altura);
 		
 		procurar.setBounds				(distanciaLateral, distanciaSuperior*2, largura*2+distanciaLateral-g, altura);
@@ -134,7 +134,7 @@ public class AppPessoas extends JFrame {
 				if (!txtEmailPessoa.getText().isEmpty()) {
 					procurar(txtEmailPessoa.getText());
 				} else {
-					JOptionPane.showMessageDialog(null,"Digite um e-mail.",nomeJanela, errorMissing);
+					JOptionPane.showMessageDialog(null,"Digite um e-mail.", nomeJanela, errorMissing);
 				}
 			}
 		});
@@ -142,13 +142,13 @@ public class AppPessoas extends JFrame {
 		deletarPessoa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!txtEmailPessoa.getText().isEmpty()) {
-					int Option = JOptionPane.showConfirmDialog(null, "Deseja mesmo excluir?",nomeJanela,errorDanger);
+					int Option = JOptionPane.showConfirmDialog(null, "Deseja mesmo excluir?", nomeJanela, errorDanger);
 					
 		            if(Option==JOptionPane.YES_OPTION) {
 		            	deletar(txtEmailPessoa.getText());
 		            }
 				} else {
-					JOptionPane.showMessageDialog(null,"Digite um e-mail.",nomeJanela, errorMissing);
+					JOptionPane.showMessageDialog(null,"Digite um e-mail.", nomeJanela, errorMissing);
 				}
 			}
 		});
@@ -208,12 +208,12 @@ public class AppPessoas extends JFrame {
 				visibilidade(true);
 				
 			} else {
-				JOptionPane.showMessageDialog(null,"E-mail não encontrado.",nomeJanela, errorMissing);
+				JOptionPane.showMessageDialog(null,"E-mail não encontrado.", nomeJanela, errorMissing);
 				visibilidade(false);
 			}
 			
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null,"Erro de conexão.",nomeJanela, errorDanger);
+			JOptionPane.showMessageDialog(null,"Erro de conexão.", nomeJanela, errorDanger);
 			ex.printStackTrace();
 		}
 	}
@@ -230,11 +230,11 @@ public class AppPessoas extends JFrame {
 			visibilidade(false);
 			limpar();
 			
-            JOptionPane.showMessageDialog(null,"Cadastro excluido com sucesso.",nomeJanela, errorInformation);	
+            JOptionPane.showMessageDialog(null,"Cadastro excluido com sucesso.", nomeJanela, errorInformation);	
             
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(null,"Erro em excluir cadastro.",nomeJanela, errorDanger);
+			JOptionPane.showMessageDialog(null,"Erro em excluir cadastro.", nomeJanela, errorDanger);
 		}
 	}
 	
@@ -257,13 +257,13 @@ public class AppPessoas extends JFrame {
 				
 				txtEmailPessoa.setText(email);
 
-				JOptionPane.showMessageDialog(null,"Alterações realizadas com sucesso.",nomeJanela,errorInformation);
+				JOptionPane.showMessageDialog(null,"Alterações realizadas com sucesso.", nomeJanela, errorInformation);
 			} catch(Exception ex) {
-				JOptionPane.showMessageDialog(null,"Erro ao alterar dados.",nomeJanela,errorDanger);
+				JOptionPane.showMessageDialog(null,"Erro ao alterar dados.", nomeJanela, errorDanger);
 				ex.printStackTrace();
 			}
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null,"Erro de conexão.",nomeJanela,errorDanger);
+			JOptionPane.showMessageDialog(null,"Erro de conexão.", nomeJanela, errorDanger);
 			ex.printStackTrace();
 		}
 	}
@@ -308,6 +308,6 @@ public class AppPessoas extends JFrame {
 	}
 	
 	public static void main(String [] args) {
-		AppPessoas auuu = new AppPessoas();
+		AppPessoas a = new AppPessoas();
 	}
 }
