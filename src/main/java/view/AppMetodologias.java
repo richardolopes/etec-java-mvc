@@ -5,47 +5,52 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import controller.JdbUtil;
-import controller.PessoasJdbcDAO;
-import model.Pessoas;
+import controller.MetodologiaJdbcDAO;
+import controller.TarefasJdbcDAO;
 
 public class AppMetodologias extends JFrame {
 	int i = 0;
-	static String nomeJanela = "Metodologia";
 	static int errorDanger = 0;
 	static int errorInformation = 1;
 	static int errorWarning = 2;
 	static int errorMissing = 3;
-
-	JPanel panelPessoa = new JPanel();
-	JPanel panelDados = new JPanel();	
+	static String nomeJanela = "Metodologia";
 	
-	JLabel lblEmailPessoa = new JLabel("Procurar " + nomeJanela + ": ");
-	JTextField txtEmailPessoa = new JTextField();
+	JPanel panelMetodologia = new JPanel();
+	JPanel panelDados = new JPanel();
 	
-	JButton procurar = new JButton("Procurar");
-
-	JLabel lblEmail = new JLabel("E-mail: ");
-	JLabel lblNome = new JLabel("Nome: ");
-	JLabel lblSexo = new JLabel("Sexo: ");
-	
-	JRadioButton rbMasculino = new JRadioButton("Masculino");
-	JRadioButton rbFeminino = new JRadioButton("Feminino");
-	
+	JComboBox<String> cbMetodologias = new JComboBox<String>();
 	JComboBox<String> cbTarefas = new JComboBox<String>();
-	
-	JTextField txtEmail= new JTextField();
-	JTextField txtNome= new JTextField();
-	JLabel txtSexo = new JLabel();
-	
-	ButtonGroup grupoSexo = new ButtonGroup();
 
-	JButton deletarPessoa = new JButton("Excluir " + nomeJanela);
-	JButton listarPessoas = new JButton("Listar " + nomeJanela + "s");
-	JButton editarPessoa = new JButton("Editar");
-	JButton adicionarPessoa = new JButton("Cadastrar " + nomeJanela);
+	//   <-------->
+	// 	 <-TAREFA->
+	//   <-------->
+	JLabel lblMetodologias = new JLabel("Metodologias: ");
+	JLabel lblTarefas = new JLabel("Tarefas: ");
+	
+	JLabel lblTitulo = new JLabel("Título: ");
+	JLabel lblPrazoEstimado = new JLabel("Prazo Estimado: ");
+	JLabel lblDescricaoTarefa = new JLabel("Descrição: ");
+	JLabel lblDataInicio = new JLabel("Data Inicio: ");
+	JLabel lblDataTermino = new JLabel("Data Termino: ");
+
+	JLabel txtTitulo = new JLabel();
+	JLabel txtPrazoEstimado = new JLabel();
+	JLabel txtDescricaoTarefa = new JLabel();
+	JLabel txtDataInicio = new JLabel();
+	JLabel txtDataTermino = new JLabel();
+	
+	JButton deletar = new JButton("Excluir");
+	JButton editar = new JButton("Editar");
 
 	public AppMetodologias() {
 		super(nomeJanela);
@@ -59,76 +64,91 @@ public class AppMetodologias extends JFrame {
 			distanciaTXT = largura+g+distanciaLateral,
 			
 			larguraPanel = distanciaLateral+largura+distanciaTXT,
-			alturaPanel = distanciaSuperior*12-altura,
+			alturaPanel = distanciaSuperior*11,
 					
 			janelaAltura = alturaPanel+distanciaSuperior*2-g/2,
 			janelaLargura = (larguraPanel+distanciaLateral*2-g/4)-2;
-
-		//   <-------->
-		// 	 <-PESSOA->
-		//   <-------->
-		grupoSexo.add(rbMasculino);
-		grupoSexo.add(rbFeminino);
 		
-		panelPessoa.setLayout(null);
-		panelPessoa.setBorder(javax.swing.BorderFactory.createTitledBorder(nomeJanela));
-		panelPessoa.setBounds			(15, 10, larguraPanel, alturaPanel);
+		//   <------------->
+		// 	 <-METODOLOGIA->
+		//   <------------->
+		panelMetodologia.setLayout(null);
+		panelMetodologia.setBorder(javax.swing.BorderFactory.createTitledBorder("Tarefas"));
+		panelMetodologia.setBounds		(15, 10, larguraPanel, alturaPanel);
 		
+		lblMetodologias.setBounds		(distanciaLateral, distanciaSuperior*1, largura, altura);
+		cbMetodologias.setBounds		(distanciaTXT, distanciaSuperior*1, largura, altura);
+		
+		panelMetodologia.add(lblMetodologias);
+		panelMetodologia.add(cbMetodologias);
+		
+		
+		//   <------->
+		// 	 <-DADOS->
+		//   <------->
 		panelDados.setLayout(null);
 		panelDados.setBorder(javax.swing.BorderFactory.createTitledBorder("Dados " + nomeJanela));
-		panelDados.setBounds			(distanciaLateral, distanciaSuperior*3, largura*2+distanciaLateral-g, altura*10);
-		
+		panelDados.setBounds			(distanciaLateral, distanciaSuperior*2, largura*2+distanciaLateral-g, altura*12);
 
-		lblEmailPessoa.setBounds		(distanciaLateral, distanciaSuperior*1, largura, altura);
-		txtEmailPessoa.setBounds		(distanciaTXT, distanciaSuperior*1, largura, altura);
+		lblTarefas.setBounds			(distanciaLateral, distanciaSuperior*1, largura-g*2, altura);
+		cbTarefas.setBounds				(distanciaTXT-g*2, distanciaSuperior*1, largura-g*2, altura);
 		
-		procurar.setBounds				(distanciaLateral, distanciaSuperior*2, largura*2+distanciaLateral-g, altura);
+		lblTitulo.setBounds				(distanciaLateral, distanciaSuperior*2, largura, altura);
+		lblPrazoEstimado.setBounds		(distanciaLateral, distanciaSuperior*3, largura, altura);
+		lblDescricaoTarefa.setBounds	(distanciaLateral, distanciaSuperior*4, largura, altura);
+		lblDataInicio.setBounds			(distanciaLateral, distanciaSuperior*5, largura, altura);
+		lblDataTermino.setBounds		(distanciaLateral, distanciaSuperior*6, largura, altura);
 
-		panelPessoa.add(panelDados);
+		txtTitulo.setBounds				(distanciaTXT, distanciaSuperior*2, largura, altura);
+		txtPrazoEstimado.setBounds		(distanciaTXT, distanciaSuperior*3, largura, altura);	
+		txtDescricaoTarefa.setBounds	(distanciaTXT, distanciaSuperior*4, largura, altura);	
+		txtDataInicio.setBounds			(distanciaTXT, distanciaSuperior*5, largura, altura);
+		txtDataTermino.setBounds		(distanciaTXT, distanciaSuperior*6, largura, altura);
 		
-			lblNome.setBounds				(distanciaLateral, distanciaSuperior*1, largura-g*2, altura);
-			lblEmail.setBounds				(distanciaLateral, distanciaSuperior*2, largura-g*2, altura);
-			lblSexo.setBounds				(distanciaLateral, distanciaSuperior*3, largura-g*2, altura);
-		
-			txtNome.setBounds				(distanciaTXT-g*2, distanciaSuperior*1, largura-g*2, altura);
-			txtEmail.setBounds				(distanciaTXT-g*2, distanciaSuperior*2, largura-g*2, altura);
-			txtSexo.setBounds				(distanciaTXT-g*2, distanciaSuperior*3, largura-g*2, altura);
-			
-			rbMasculino.setBounds 			(distanciaTXT-g*2, distanciaSuperior*3, largura-g*2, altura);
-			rbFeminino.setBounds 			(distanciaTXT-g*2, distanciaSuperior*4, largura-g*2, altura);
-			
-			editarPessoa.setBounds			(distanciaLateral, distanciaSuperior*6-g*2, largura-g*2, altura);
-			deletarPessoa.setBounds			(distanciaTXT-g*2, distanciaSuperior*6-g*2, largura-g*2, altura);
-		//-----
-		adicionarPessoa.setBounds		(distanciaLateral, distanciaSuperior*10, largura, altura);
-		listarPessoas.setBounds			(distanciaTXT, distanciaSuperior*10, largura, altura);
+		editar.setBounds				(distanciaLateral, distanciaSuperior*7, largura-g*2, altura);
+		deletar.setBounds				(distanciaTXT-g*2, distanciaSuperior*7, largura-g*2, altura);
 
-		panelPessoa.add(lblEmailPessoa);
-		panelPessoa.add(txtEmailPessoa);
+		panelDados.add(lblTarefas);
+		panelDados.add(lblTitulo);
+		panelDados.add(lblPrazoEstimado);
+		panelDados.add(lblDescricaoTarefa);
+		panelDados.add(lblDataInicio);
+		panelDados.add(lblDataTermino);
 		
-		panelPessoa.add(procurar);
-
-		panelDados.add(lblNome);
-		panelDados.add(lblEmail);
-		panelDados.add(lblSexo);
-
-		panelDados.add(txtNome);
-		panelDados.add(txtEmail);
-		panelDados.add(txtSexo);
+		panelDados.add(txtTitulo);
+		panelDados.add(txtPrazoEstimado);
+		panelDados.add(txtDescricaoTarefa);
+		panelDados.add(txtDataInicio);
+		panelDados.add(txtDataTermino);
 		
-		panelDados.add(rbMasculino);
-		panelDados.add(rbFeminino);
+		panelDados.add(editar);
+		panelDados.add(deletar);
+		panelDados.add(cbTarefas);
 		
-		panelDados.add(deletarPessoa);
-		panelDados.add(editarPessoa);
+		panelMetodologia.add(panelDados);
 		
-		panelPessoa.add(adicionarPessoa);
-		panelPessoa.add(listarPessoas);
-
-		visibilidade(false);
+		paine.add(panelMetodologia);
 		
-		paine.add(panelPessoa);
+		attMetodologias();
 		
+		cbTarefas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				attTarefa();
+			}
+		});
+		
+		cbMetodologias.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				attTarefas(cbMetodologias.getSelectedItem().toString());
+			}
+		});
+		
+		editar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EditarMetodologia a = new EditarMetodologia(Integer.parseInt( cbTarefas.getSelectedItem().toString() ));
+				dispose();
+			}
+		});
 		
 
 		this.setResizable(false);
@@ -138,123 +158,63 @@ public class AppMetodologias extends JFrame {
 		this.setLocationRelativeTo(null);
 	}
 	
-	public void procurar(String email) {
+	public void attMetodologias() {
 		try {
+			cbMetodologias.removeAllItems();
 			Connection connection = JdbUtil.getConnection();
-			PessoasJdbcDAO pDAO = new PessoasJdbcDAO(connection);
+			MetodologiaJdbcDAO met = new MetodologiaJdbcDAO(connection);
 			
-			if (pDAO.verificarEmail(email) > 0) {
-				String[] resultado = pDAO.retornarInfPessoa(email);
-
-				txtNome.setText(resultado[0]);
-				txtEmail.setText(resultado[1]);
-				
-				if (resultado[2].contentEquals("masculino")) {
-					rbMasculino.setSelected(true);
-				} else {
-					rbFeminino.setSelected(true);
-				}
-
-				visibilidade(true);
-				
-			} else {
-				JOptionPane.showMessageDialog(null,"E-mail não encontrado.", nomeJanela, errorMissing);
-				visibilidade(false);
+			i = 0;
+			for ( String titulo: met.listar() ) {
+				cbMetodologias.addItem(met.listar().get(i));
+				i++;
 			}
 			
+			attTarefas(cbMetodologias.getSelectedItem().toString());
+			
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null,"Erro de conexão.", nomeJanela, errorDanger);
 			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null,"Erro em atualizar CB.METODOLOGIAS.",nomeJanela,errorDanger);
 		}
 	}
 	
-	public void deletar(String email) {
+	public void attTarefas(String metodologia) {
 		try {
+			cbTarefas.removeAllItems();
 			Connection connection = JdbUtil.getConnection();
-			PessoasJdbcDAO pes = new PessoasJdbcDAO(connection);
+			MetodologiaJdbcDAO met = new MetodologiaJdbcDAO(connection);
 			
-			String[] resultado = pes.retornarInfPessoa(email);
-			
-			pes.deletar(Integer.parseInt(resultado[3]));
-			
-			visibilidade(false);
-			limpar();
-			
-            JOptionPane.showMessageDialog(null,"Cadastro excluido com sucesso.", nomeJanela, errorInformation);	
-            
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			JOptionPane.showMessageDialog(null,"Erro em excluir cadastro.", nomeJanela, errorDanger);
-		}
-	}
-	
-	public void editar(String emailPessoa, String email, String nome, String sexo) {
-		Pessoas pessoa1 = new Pessoas();
-		
-		try {
-			Connection connection = JdbUtil.getConnection();
-			PessoasJdbcDAO pessoasJdbcDao = new PessoasJdbcDAO(connection);
-		
-			try {
-				String[] resultado = pessoasJdbcDao.retornarInfPessoa(emailPessoa);
-				
-				pessoa1.setId(Integer.parseInt(resultado[3]));
-				pessoa1.setNome(nome);
-				pessoa1.setEmail(email);
-				pessoa1.setSexo(sexo);
-
-				pessoasJdbcDao.alterar(pessoa1);
-				
-				txtEmailPessoa.setText(email);
-
-				JOptionPane.showMessageDialog(null,"Alterações realizadas com sucesso.", nomeJanela, errorInformation);
-			} catch(Exception ex) {
-				JOptionPane.showMessageDialog(null,"Erro ao alterar dados.", nomeJanela, errorDanger);
-				ex.printStackTrace();
+			i = 0;
+			for ( String id: met.listarTarefas(metodologia) ) {
+				cbTarefas.addItem(met.listarTarefas(metodologia).get(i));
+				i++;
 			}
+			
+			attTarefa();
+			
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null,"Erro de conexão.", nomeJanela, errorDanger);
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null,"Erro em atualizar CB.METODOLOGIAS.",nomeJanela, JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+	
+	public void attTarefa() {
+		try {
+			Connection connection = JdbUtil.getConnection();
+			TarefasJdbcDAO tDAO = new TarefasJdbcDAO(connection);
+
+			String[] resultado = tDAO.retornarInfTarefa( Integer.parseInt( cbTarefas.getSelectedItem().toString() ) );
+
+			txtTitulo.setText(resultado[0]);
+			txtPrazoEstimado.setText(resultado[1]);
+			txtDescricaoTarefa.setText(resultado[2]);
+			txtDataInicio.setText(resultado[3]);
+			txtDataTermino.setText(resultado[4]);
+	
+		} catch (Exception ex) {
+			//JOptionPane.showMessageDialog(null,"Erro ao atualizar dados da tarefas.",nomeJanela, JOptionPane.INFORMATION_MESSAGE);
 			ex.printStackTrace();
 		}
-	}
-	
-	public void visibilidade(boolean visible) {
-		if (visible) {
-			lblNome.setVisible(true);
-			lblEmail.setVisible(true);
-			lblSexo.setVisible(true);
-			
-			txtNome.setVisible(true);
-			txtEmail.setVisible(true);
-			txtSexo.setVisible(true);
-			
-			rbMasculino.setVisible(true);
-			rbFeminino.setVisible(true);
-			
-			deletarPessoa.setVisible(true);
-			editarPessoa.setVisible(true);
-		} else {
-			lblNome.setVisible(false);
-			lblEmail.setVisible(false);
-			lblSexo.setVisible(false);
-			
-			txtNome.setVisible(false);
-			txtEmail.setVisible(false);
-			txtSexo.setVisible(false);
-			
-			rbMasculino.setVisible(false);
-			rbFeminino.setVisible(false);
-			
-			deletarPessoa.setVisible(false);
-			editarPessoa.setVisible(false);
-		}
-	}
-	
-	public void limpar() {
-		txtEmailPessoa.setText("");
-		txtEmail.setText("");
-		txtNome.setText("");
-		txtSexo.setText("");
 	}
 	
 	public static void main(String [] args) {

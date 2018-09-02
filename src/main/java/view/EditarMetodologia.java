@@ -3,6 +3,8 @@ package view;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 
 import javax.swing.JButton;
@@ -80,6 +82,14 @@ public class EditarMetodologia extends JFrame {
 				} else {
 					JOptionPane.showMessageDialog(null,"Digite o nome da metodologia.",nomeJanela, JOptionPane.INFORMATION_MESSAGE);
 				}
+			}
+		});
+		
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent evt) {
+				//if (JOptionPane.showConfirmDialog(null,"Deseja sair?") == JOptionPane.OK_OPTION){
+					AppMetodologias a = new AppMetodologias();
+				//}
 			}
 		});
 		

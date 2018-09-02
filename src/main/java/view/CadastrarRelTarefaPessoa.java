@@ -21,6 +21,10 @@ import model.Tarefas;
 
 public class CadastrarRelTarefaPessoa extends JFrame {	
 	static String nomeJanela = "Cadastrar Relações";
+	static int errorDanger = 0;
+	static int errorInformation = 1;
+	static int errorWarning = 2;
+	static int errorMissing = 3;
 	
 	JPanel panelRel = new JPanel();
 	
@@ -82,7 +86,7 @@ public class CadastrarRelTarefaPessoa extends JFrame {
 				if (!txtPessoa.getText().isEmpty()) {
 					Cadastrar(Integer.parseInt(txtID.getText()), txtPessoa.getText());
 				} else {
-					JOptionPane.showMessageDialog(null,"Digite um e-mail",nomeJanela, JOptionPane.CLOSED_OPTION);
+					JOptionPane.showMessageDialog(null,"Digite um e-mail", nomeJanela, errorMissing);
 				}
 			}
 		});
@@ -105,7 +109,7 @@ public class CadastrarRelTarefaPessoa extends JFrame {
 				String[] idPessoa = pessoas.retornarInfPessoa(email);
 				
 				if (rel_tarefa_pessoa.verificarTarefaPessoa(idTarefa, Integer.parseInt(idPessoa[3]) ) > 0) {
-					JOptionPane.showMessageDialog(null,"Relação já feita",nomeJanela, JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null,"Relação já feita", nomeJanela, errorWarning);
 				} else {
 					try {
 						relTarefaPessoa1.setId_pessoa( Integer.parseInt(idPessoa[3]) );
@@ -113,17 +117,17 @@ public class CadastrarRelTarefaPessoa extends JFrame {
 
 						rel_tarefa_pessoa.salvar(relTarefaPessoa1);
 						
-						JOptionPane.showMessageDialog(null,"Relação realizada com sucesso.",nomeJanela, JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null,"Relação realizada com sucesso.", nomeJanela, errorInformation);
 					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(null,"Erro ao cadastrar.",nomeJanela, JOptionPane.CLOSED_OPTION);
+						JOptionPane.showMessageDialog(null,"Erro ao cadastrar.", nomeJanela, errorDanger);
 						ex.printStackTrace();
 					}
 				}
 			} else {
-				JOptionPane.showMessageDialog(null,"E-mail não encontrado",nomeJanela, JOptionPane.CLOSED_OPTION);
+				JOptionPane.showMessageDialog(null,"E-mail não encontrado", nomeJanela, errorMissing);
 			}
 		} catch(Exception ex) {
-			JOptionPane.showMessageDialog(null,"Erro de conexão",nomeJanela, JOptionPane.CLOSED_OPTION);
+			JOptionPane.showMessageDialog(null,"Erro de conexão", nomeJanela, errorDanger);
 			ex.printStackTrace();
 		}
 	}

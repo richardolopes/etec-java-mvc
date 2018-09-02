@@ -106,7 +106,7 @@ public class App extends JFrame {
 						break;
 						
 					case "M":
-						AppTarefas AppMetodologia = new AppTarefas();
+						AppMetodologias AppMetodologia = new AppMetodologias();
 						break;
 						
 					case "R":

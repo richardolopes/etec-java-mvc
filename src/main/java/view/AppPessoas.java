@@ -42,10 +42,10 @@ public class AppPessoas extends JFrame {
 	
 	ButtonGroup grupoSexo = new ButtonGroup();
 
-	JButton deletarPessoa = new JButton("Excluir " + nomeJanela);
-	JButton listarPessoas = new JButton("Listar " + nomeJanela + "s");
-	JButton editarPessoa = new JButton("Editar");
-	JButton adicionarPessoa = new JButton("Cadastrar " + nomeJanela);
+	JButton deletar = new JButton("Excluir");
+	JButton listar = new JButton("Listar " + nomeJanela + "s");
+	JButton editar = new JButton("Editar");
+	JButton adicionar = new JButton("Cadastrar " + nomeJanela);
 
 	public AppPessoas() {
 		super(nomeJanela);
@@ -97,11 +97,11 @@ public class AppPessoas extends JFrame {
 			rbMasculino.setBounds 			(distanciaTXT-g*2, distanciaSuperior*3, largura-g*2, altura);
 			rbFeminino.setBounds 			(distanciaTXT-g*2, distanciaSuperior*4, largura-g*2, altura);
 			
-			editarPessoa.setBounds			(distanciaLateral, distanciaSuperior*6-g*2, largura-g*2, altura);
-			deletarPessoa.setBounds			(distanciaTXT-g*2, distanciaSuperior*6-g*2, largura-g*2, altura);
+			editar.setBounds				(distanciaLateral, distanciaSuperior*6-g*2, largura-g*2, altura);
+			deletar.setBounds				(distanciaTXT-g*2, distanciaSuperior*6-g*2, largura-g*2, altura);
 		//-----
-		adicionarPessoa.setBounds		(distanciaLateral, distanciaSuperior*10, largura, altura);
-		listarPessoas.setBounds			(distanciaTXT, distanciaSuperior*10, largura, altura);
+		adicionar.setBounds				(distanciaLateral, distanciaSuperior*10, largura, altura);
+		listar.setBounds				(distanciaTXT, distanciaSuperior*10, largura, altura);
 
 		panelPessoa.add(lblEmailPessoa);
 		panelPessoa.add(txtEmailPessoa);
@@ -119,11 +119,11 @@ public class AppPessoas extends JFrame {
 		panelDados.add(rbMasculino);
 		panelDados.add(rbFeminino);
 		
-		panelDados.add(deletarPessoa);
-		panelDados.add(editarPessoa);
+		panelDados.add(deletar);
+		panelDados.add(editar);
 		
-		panelPessoa.add(adicionarPessoa);
-		panelPessoa.add(listarPessoas);
+		panelPessoa.add(adicionar);
+		panelPessoa.add(listar);
 
 		visibilidade(false);
 		
@@ -139,7 +139,7 @@ public class AppPessoas extends JFrame {
 			}
 		});
 		
-		deletarPessoa.addActionListener(new ActionListener() {
+		deletar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!txtEmailPessoa.getText().isEmpty()) {
 					int Option = JOptionPane.showConfirmDialog(null, "Deseja mesmo excluir?", nomeJanela, errorDanger);
@@ -153,19 +153,19 @@ public class AppPessoas extends JFrame {
 			}
 		});
 
-		adicionarPessoa.addActionListener(new ActionListener() {
+		adicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CadastrarPessoas a = new CadastrarPessoas();
 			}
 		});
 		
-		listarPessoas.addActionListener(new ActionListener( ) {
+		listar.addActionListener(new ActionListener( ) {
 			public void actionPerformed(ActionEvent e) {
 				ListarPessoas a = new ListarPessoas();
 			}
 		});
 		
-		editarPessoa.addActionListener(new ActionListener() {
+		editar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!txtNome.getText().isEmpty() && !txtEmail.getText().isEmpty() && grupoSexo.getSelection() != null) {
 					String sexo = "";
@@ -281,8 +281,8 @@ public class AppPessoas extends JFrame {
 			rbMasculino.setVisible(true);
 			rbFeminino.setVisible(true);
 			
-			deletarPessoa.setVisible(true);
-			editarPessoa.setVisible(true);
+			deletar.setVisible(true);
+			editar.setVisible(true);
 		} else {
 			lblNome.setVisible(false);
 			lblEmail.setVisible(false);
@@ -295,8 +295,8 @@ public class AppPessoas extends JFrame {
 			rbMasculino.setVisible(false);
 			rbFeminino.setVisible(false);
 			
-			deletarPessoa.setVisible(false);
-			editarPessoa.setVisible(false);
+			deletar.setVisible(false);
+			editar.setVisible(false);
 		}
 	}
 	
