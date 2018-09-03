@@ -18,8 +18,8 @@ import controller.JdbUtil;
 import controller.MetodologiaJdbcDAO;
 import model.Metodologia;
 
-public class EditarMetodologia extends JFrame {
-	static String nomeJanela = "Editar Metodologia";
+public class CadastrarMetodologias extends JFrame {
+	static String nomeJanela = "Cadastrar Metodologia";
 	static int errorDanger = 0;
 	static int errorInformation = 1;
 	static int errorWarning = 2;
@@ -27,15 +27,15 @@ public class EditarMetodologia extends JFrame {
 	
 	JPanel panelMetodologia = new JPanel();
 	
-	JLabel lblID = new JLabel("ID:");
-	JLabel txtID = new JLabel();
+	JLabel lblID = new JLabel("ID Tarefa:");
+	JTextField txtID = new JTextField();
 	
 	JLabel lblMetodologia = new JLabel("Metodologia:");
 	JTextField txtMetodologia = new JTextField();
 	
-	JButton editar = new JButton("Editar");
+	JButton cadastrar = new JButton("Cadastrar");
 	
-	public EditarMetodologia(int id) {
+	public CadastrarMetodologias() {
 		super(nomeJanela);
 		Container paine = this.getContentPane();
 		paine.setLayout(null);
@@ -65,7 +65,7 @@ public class EditarMetodologia extends JFrame {
 		txtID.setBounds				(distanciaTXT, distanciaSuperior*1, largura, altura);
 		txtMetodologia.setBounds			(distanciaTXT, distanciaSuperior*2, largura, altura);
 
-		editar.setBounds		(distanciaLateral, distanciaSuperior*4, largura, altura);
+		cadastrar.setBounds		(distanciaLateral, distanciaSuperior*4, largura, altura);
 
 		panelMetodologia.add(lblID);
 		panelMetodologia.add(lblMetodologia);
@@ -73,18 +73,17 @@ public class EditarMetodologia extends JFrame {
 		panelMetodologia.add(txtID);
 		panelMetodologia.add(txtMetodologia);
 		
-		panelMetodologia.add(editar);
+		panelMetodologia.add(cadastrar);
 		
 		paine.add(panelMetodologia);
 		
-		txtID.setText(id + "");
 		
-		editar.addActionListener(new ActionListener() {
+		cadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (!txtMetodologia.getText().isEmpty()) {
-					editarMetodologia(Integer.parseInt(txtID.getText()), txtMetodologia.getText());
+				if (!txtMetodologia.getText().isEmpty() || !txtID.getText().isEmpty()) {
+					cadastrar(Integer.parseInt(txtID.getText()), txtMetodologia.getText());
 				} else {
-					JOptionPane.showMessageDialog(null,"Digite o nome da metodologia.", nomeJanela, errorMissing);
+					JOptionPane.showMessageDialog(null,"Preencha todos os campos.", nomeJanela, errorMissing);
 				}
 			}
 		});
@@ -104,27 +103,25 @@ public class EditarMetodologia extends JFrame {
 		this.setLocationRelativeTo(null);
 	}
 	
-	public void editarMetodologia(int id, String titulo) {
+	public void cadastrar(int id, String metodologia) {
 		try {
 			Connection connection = JdbUtil.getConnection();
 			MetodologiaJdbcDAO tDAO = new MetodologiaJdbcDAO(connection);
 			Metodologia met = new Metodologia();
 			
 			met.setId(id);
-			met.setTitulo(titulo);
+			met.setTitulo(metodologia);
 			
-			tDAO.alterar(met);
-			System.out.println(tDAO.retornarInfMetodologia(id));
+			tDAO.salvar(met);
 			
-			JOptionPane.showMessageDialog(null,"Alteração realizada com sucesso.",nomeJanela, errorInformation);
-
+			JOptionPane.showMessageDialog(null,"Cadastro realizado com sucesso.", nomeJanela, errorInformation);
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null,"Erro ao atualizar dados da metodologia.",nomeJanela, errorDanger);
+			JOptionPane.showMessageDialog(null,"Erro ao realizar cadastro.", nomeJanela, errorDanger);
 			ex.printStackTrace();
 		}
 	}
 	
-	public static void main(String [] args) {
-		EditarMetodologia a = new EditarMetodologia(1);
+	public static void main(String[] args) {
+
 	}
 }

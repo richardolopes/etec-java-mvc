@@ -19,11 +19,11 @@ import controller.TarefasJdbcDAO;
 
 public class AppMetodologias extends JFrame {
 	int i = 0;
+	static String nomeJanela = "Metodologia";
 	static int errorDanger = 0;
 	static int errorInformation = 1;
 	static int errorWarning = 2;
 	static int errorMissing = 3;
-	static String nomeJanela = "Metodologia";
 	
 	JPanel panelMetodologia = new JPanel();
 	JPanel panelDados = new JPanel();
@@ -51,6 +51,8 @@ public class AppMetodologias extends JFrame {
 	
 	JButton deletar = new JButton("Excluir");
 	JButton editar = new JButton("Editar");
+	
+	JButton cadastrar = new JButton("Cadastrar");
 
 	public AppMetodologias() {
 		super(nomeJanela);
@@ -64,7 +66,7 @@ public class AppMetodologias extends JFrame {
 			distanciaTXT = largura+g+distanciaLateral,
 			
 			larguraPanel = distanciaLateral+largura+distanciaTXT,
-			alturaPanel = distanciaSuperior*11,
+			alturaPanel = distanciaSuperior*12,
 					
 			janelaAltura = alturaPanel+distanciaSuperior*2-g/2,
 			janelaLargura = (larguraPanel+distanciaLateral*2-g/4)-2;
@@ -79,9 +81,12 @@ public class AppMetodologias extends JFrame {
 		lblMetodologias.setBounds		(distanciaLateral, distanciaSuperior*1, largura, altura);
 		cbMetodologias.setBounds		(distanciaTXT, distanciaSuperior*1, largura, altura);
 		
+		cadastrar.setBounds 			(distanciaLateral, distanciaSuperior*10+altura, largura*2+distanciaLateral-g, altura);
+		
 		panelMetodologia.add(lblMetodologias);
 		panelMetodologia.add(cbMetodologias);
 		
+		panelMetodologia.add(cadastrar);
 		
 		//   <------->
 		// 	 <-DADOS->
@@ -124,7 +129,7 @@ public class AppMetodologias extends JFrame {
 		panelDados.add(editar);
 		panelDados.add(deletar);
 		panelDados.add(cbTarefas);
-		
+
 		panelMetodologia.add(panelDados);
 		
 		paine.add(panelMetodologia);
@@ -150,6 +155,19 @@ public class AppMetodologias extends JFrame {
 			}
 		});
 		
+		deletar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ExcluirMetodologia a = new ExcluirMetodologia(Integer.parseInt( cbTarefas.getSelectedItem().toString() ));
+				dispose();
+			}
+		});
+		
+		cadastrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CadastrarMetodologias a = new CadastrarMetodologias();
+				dispose();
+			}
+		});
 
 		this.setResizable(false);
 		this.setVisible(true);
