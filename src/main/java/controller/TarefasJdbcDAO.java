@@ -26,29 +26,20 @@ public class TarefasJdbcDAO {
         prepareStatement.close();
 	}
 	
-	public void alterar(Tarefas c) {
+	public void alterar(Tarefas c) throws SQLException {
 		String sql = "update tarefa set titulo='"+c.getTitulo()+"',prazo_estimado='"+c.getPrazo_estimado()+"',descricao='"+c.getDescricao()+"',data_inicio='"+c.getData_inicio()+"',data_termino='"+c.getData_termino()+" where id = "+c.getId()+";";
 		System.out.println(sql);
-		PreparedStatement prepareStatement;
-		try {
-			prepareStatement = this.conn.prepareStatement(sql);
-			prepareStatement.executeUpdate();
-            prepareStatement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}		
+		PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
+		prepareStatement.executeUpdate();
+        prepareStatement.close();		
 	}
 	
-	public void deletar(int id) {
+	public void deletar(int id) throws SQLException {
 		String sql = "delete from tarefa where id = " + id;
 		System.out.println(sql);
-        try {
-    		PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
-    		prepareStatement.executeUpdate();
-			prepareStatement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}                		
+		PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
+		prepareStatement.executeUpdate();
+		prepareStatement.close();       		
 	}
 	
 	public int ultimaTarefa() throws SQLException {
@@ -63,22 +54,20 @@ public class TarefasJdbcDAO {
 		return lastId;
 	}
 	
-	public List<String> listar() {
+	public List<String> listar() throws SQLException {
 		String sql = "select * from tarefa";
         System.out.println(sql);		
         List<String> Tarefas = new ArrayList<String>();
-		try {
-			PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
-			ResultSet rs = prepareStatement.executeQuery();
-			while(rs.next()) {
-				String id = rs.getString("id");
-				Tarefas.add(id);
-			}
-			rs.close();
-			prepareStatement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		
+		PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
+		ResultSet rs = prepareStatement.executeQuery();
+		while(rs.next()) {
+			String id = rs.getString("id");
+			Tarefas.add(id);
 		}
+		rs.close();
+		prepareStatement.close();
+		
 		return Tarefas;
 	}
 	

@@ -27,48 +27,36 @@ private Connection conn;
         prepareStatement.close();
 	}
 	
-	public void alterar(Pessoas c) {
+	public void alterar(Pessoas c) throws SQLException {
 		String sql = "update pessoa set nome='"+c.getNome()+"',email='"+c.getEmail()+"',sexo='"+c.getSexo()+"' where id = "+c.getId()+";";
 		System.out.println(sql);
-		PreparedStatement prepareStatement;
-		try {
-			prepareStatement = this.conn.prepareStatement(sql);
-			prepareStatement.executeUpdate();
-            prepareStatement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}		
+		PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
+		prepareStatement.executeUpdate();
+        prepareStatement.close();	
 	}
 	
-	public void deletar(int id) {
+	public void deletar(int id) throws SQLException {
 		String sql = "delete from pessoa where id = " + id;
 		System.out.println(sql);
-		PreparedStatement prepareStatement;
-		try {
-			prepareStatement = this.conn.prepareStatement(sql);
-			prepareStatement.executeUpdate();
-            prepareStatement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}			  		
+		PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
+		prepareStatement.executeUpdate();
+        prepareStatement.close();		  		
 	}
 	
-	public List<String> listar() {
+	public List<String> listar() throws SQLException {
 		String sql = "select * from pessoa";
         System.out.println(sql);		
         List<String> Pessoas = new ArrayList<String>();
-		try {
-			PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
-			ResultSet rs = prepareStatement.executeQuery();
-			while(rs.next()) {
-				String email = rs.getString("email");
-				Pessoas.add(email);
-			}
-			rs.close();
-			prepareStatement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+        
+		PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
+		ResultSet rs = prepareStatement.executeQuery();
+		while(rs.next()) {
+			String email = rs.getString("email");
+			Pessoas.add(email);
 		}
+		rs.close();
+		prepareStatement.close();
+
 		return Pessoas;
 	}
 	
@@ -93,8 +81,7 @@ private Connection conn;
 		String id = rs.getString("id");
 		String nome = rs.getString("nome");
 		String sexo = rs.getString("sexo");
-		
-		
+
 		String[] informacoes = {nome, (String) object, sexo, id};
 		
 		rs.close();

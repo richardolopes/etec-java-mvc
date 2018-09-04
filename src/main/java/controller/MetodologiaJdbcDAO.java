@@ -24,29 +24,21 @@ public class MetodologiaJdbcDAO {
         prepareStatement.close();
 	}
 	
-	public void alterar(Metodologia c) {
+	public void alterar(Metodologia c) throws SQLException {
 		String sql = "update metodologia set titulo = '"+c.getTitulo()+"' where id = "+c.getId()+";";
 		System.out.println(sql);
-		PreparedStatement prepareStatement;
-		try {
-			prepareStatement = this.conn.prepareStatement(sql);
-			prepareStatement.executeUpdate();
-            prepareStatement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}		
+		PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
+		prepareStatement.executeUpdate();
+        prepareStatement.close();
+		
 	}
 	
-	public void deletar(int id) {
+	public void deletar(int id) throws SQLException {
 		String sql = "delete from metodologia where id = " + id;
 		System.out.println(sql);
-        try {
-    		PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
-    		prepareStatement.executeUpdate();
-			prepareStatement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}                		
+		PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
+		prepareStatement.executeUpdate();
+		prepareStatement.close();     		
 	}
 	
 	public String retornarInfMetodologia(Object object) throws SQLException {
@@ -65,41 +57,37 @@ public class MetodologiaJdbcDAO {
 		return informacoes;
 	}
 	
-	public List<String> listar() {
+	public List<String> listar() throws SQLException {
 		String sql = "select count(titulo) as 'Qtd utilizada', titulo as 'Metodologia' from metodologia group by titulo order by count(titulo) DESC";
         System.out.println(sql);		
         List<String> Tarefas = new ArrayList<String>();
-		try {
-			PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
-			ResultSet rs = prepareStatement.executeQuery();
-			while(rs.next()) {
-				String titulo = rs.getString("Metodologia");
-				Tarefas.add(titulo);
-			}
-			rs.close();
-			prepareStatement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+	
+		PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
+		ResultSet rs = prepareStatement.executeQuery();
+		while(rs.next()) {
+			String titulo = rs.getString("Metodologia");
+			Tarefas.add(titulo);
 		}
+		rs.close();
+		prepareStatement.close();
+
 		return Tarefas;
 	}
 	
-	public List<String> listarTarefas(String metodologia) {
+	public List<String> listarTarefas(String metodologia) throws SQLException {
 		String sql = "select * from metodologia where titulo = '" + metodologia + "';";
         System.out.println(sql);		
         List<String> Tarefas = new ArrayList<String>();
-		try {
-			PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
-			ResultSet rs = prepareStatement.executeQuery();
-			while(rs.next()) {
-				String id = rs.getString("id");
-				Tarefas.add(id);
-			}
-			rs.close();
-			prepareStatement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		
+		PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
+		ResultSet rs = prepareStatement.executeQuery();
+		while(rs.next()) {
+			String id = rs.getString("id");
+			Tarefas.add(id);
 		}
+		rs.close();
+		prepareStatement.close();
+		
 		return Tarefas;
 	}
 }

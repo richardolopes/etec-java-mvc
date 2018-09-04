@@ -75,25 +75,29 @@ public class AppMetodologias extends JFrame {
 		// 	 <-METODOLOGIA->
 		//   <------------->
 		panelMetodologia.setLayout(null);
-		panelMetodologia.setBorder(javax.swing.BorderFactory.createTitledBorder("Tarefas"));
+		panelMetodologia.setBorder(javax.swing.BorderFactory.createTitledBorder(nomeJanela));
 		panelMetodologia.setBounds		(15, 10, larguraPanel, alturaPanel);
 		
 		lblMetodologias.setBounds		(distanciaLateral, distanciaSuperior*1, largura, altura);
 		cbMetodologias.setBounds		(distanciaTXT, distanciaSuperior*1, largura, altura);
 		
+		editar.setBounds				(distanciaLateral, distanciaSuperior*9+altura, largura, altura);
+		deletar.setBounds				(distanciaTXT, distanciaSuperior*9+altura, largura, altura);
 		cadastrar.setBounds 			(distanciaLateral, distanciaSuperior*10+altura, largura*2+distanciaLateral-g, altura);
-		
+
 		panelMetodologia.add(lblMetodologias);
 		panelMetodologia.add(cbMetodologias);
 		
+		panelMetodologia.add(editar);
+		panelMetodologia.add(deletar);
 		panelMetodologia.add(cadastrar);
 		
 		//   <------->
 		// 	 <-DADOS->
 		//   <------->
 		panelDados.setLayout(null);
-		panelDados.setBorder(javax.swing.BorderFactory.createTitledBorder("Dados " + nomeJanela));
-		panelDados.setBounds			(distanciaLateral, distanciaSuperior*2, largura*2+distanciaLateral-g, altura*12);
+		panelDados.setBorder(javax.swing.BorderFactory.createTitledBorder("Dados Tarefas"));
+		panelDados.setBounds			(distanciaLateral, distanciaSuperior*2, largura*2+distanciaLateral-g, altura*11);
 
 		lblTarefas.setBounds			(distanciaLateral, distanciaSuperior*1, largura-g*2, altura);
 		cbTarefas.setBounds				(distanciaTXT-g*2, distanciaSuperior*1, largura-g*2, altura);
@@ -110,9 +114,7 @@ public class AppMetodologias extends JFrame {
 		txtDataInicio.setBounds			(distanciaTXT, distanciaSuperior*5, largura, altura);
 		txtDataTermino.setBounds		(distanciaTXT, distanciaSuperior*6, largura, altura);
 		
-		editar.setBounds				(distanciaLateral, distanciaSuperior*7, largura-g*2, altura);
-		deletar.setBounds				(distanciaTXT-g*2, distanciaSuperior*7, largura-g*2, altura);
-
+		
 		panelDados.add(lblTarefas);
 		panelDados.add(lblTitulo);
 		panelDados.add(lblPrazoEstimado);
@@ -125,9 +127,7 @@ public class AppMetodologias extends JFrame {
 		panelDados.add(txtDescricaoTarefa);
 		panelDados.add(txtDataInicio);
 		panelDados.add(txtDataTermino);
-		
-		panelDados.add(editar);
-		panelDados.add(deletar);
+
 		panelDados.add(cbTarefas);
 
 		panelMetodologia.add(panelDados);
@@ -150,7 +150,7 @@ public class AppMetodologias extends JFrame {
 		
 		editar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				EditarMetodologia a = new EditarMetodologia(Integer.parseInt( cbTarefas.getSelectedItem().toString() ));
+				EditarMetodologia a = new EditarMetodologia(Integer.parseInt( cbTarefas.getSelectedItem().toString() ), true);
 				dispose();
 			}
 		});

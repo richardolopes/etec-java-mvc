@@ -35,7 +35,7 @@ public class EditarMetodologia extends JFrame {
 	
 	JButton editar = new JButton("Editar");
 	
-	public EditarMetodologia(int id) {
+	public EditarMetodologia(int id, final boolean appMet) {
 		super(nomeJanela);
 		Container paine = this.getContentPane();
 		paine.setLayout(null);
@@ -92,7 +92,9 @@ public class EditarMetodologia extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
 				//if (JOptionPane.showConfirmDialog(null,"Deseja sair?") == JOptionPane.OK_OPTION){
+				if(appMet) {
 					AppMetodologias a = new AppMetodologias();
+				}
 				//}
 			}
 		});
@@ -125,6 +127,6 @@ public class EditarMetodologia extends JFrame {
 	}
 	
 	public static void main(String [] args) {
-		EditarMetodologia a = new EditarMetodologia(1);
+		EditarMetodologia a = new EditarMetodologia(1, true);
 	}
 }
