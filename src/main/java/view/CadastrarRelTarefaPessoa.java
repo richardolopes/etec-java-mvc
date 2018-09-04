@@ -133,6 +133,6 @@ public class CadastrarRelTarefaPessoa extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		CadastrarRelTarefaPessoa a = new CadastrarRelTarefaPessoa(1);
+		CadastrarRelTarefaPessoa a = new CadastrarRelTarefaPessoa(4);
 	}
 }

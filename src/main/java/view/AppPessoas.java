@@ -234,7 +234,7 @@ public class AppPessoas extends JFrame {
             
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(null,"Erro em excluir cadastro.", nomeJanela, errorDanger);
+			JOptionPane.showMessageDialog(null,"Erro ao excluir cadastro.", nomeJanela, errorDanger);
 		}
 	}
 	

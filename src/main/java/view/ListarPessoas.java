@@ -20,7 +20,7 @@ import controller.TarefasJdbcDAO;
 
 public class ListarPessoas extends JFrame {
 	int i = 0;
-	static String nomeJanela = "Pessoas";
+	static String nomeJanela = "Listar Pessoas";
 	static int errorDanger = 0;
 	static int errorInformation = 1;
 	static int errorWarning = 2;
@@ -186,7 +186,7 @@ public class ListarPessoas extends JFrame {
 			
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(null,"Erro em atualizar CB.PESSOAS.",nomeJanela,errorDanger);
+			JOptionPane.showMessageDialog(null,"Erro ao atualizar CB.PESSOAS.",nomeJanela,errorDanger);
 		}
 	}
 	
@@ -200,10 +200,12 @@ public class ListarPessoas extends JFrame {
 			txtNome.setText(resultado[0]);
 			txtEmail.setText(resultado[1]);
 			txtSexo.setText(resultado[2]);
+			
+			attTarefas(resultado[1]);
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(null,"Erro em atualizar dados da pessoa.",nomeJanela,errorDanger);
+			JOptionPane.showMessageDialog(null,"Erro ao atualizar dados da pessoa.",nomeJanela,errorDanger);
 		}
 	}
 	
@@ -220,10 +222,18 @@ public class ListarPessoas extends JFrame {
 			}
 			
 			attTarefa(Integer.parseInt( cbTarefas.getSelectedItem().toString() ));
+		} catch (java.lang.NullPointerException ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null,"Não há tarefas.",nomeJanela,errorMissing);
 			
+			txtTitulo.setText("");
+			txtPrazoEstimado.setText("");
+			txtDescricaoTarefa.setText("");
+			txtDataInicio.setText("");
+			txtDataTermino.setText("");
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(null,"Erro em atualizar CB.TAREFAS.",nomeJanela,errorDanger);
+			JOptionPane.showMessageDialog(null,"Erro ao atualizar CB.TAREFAS.",nomeJanela,errorDanger);
 		}
 	}
 	
@@ -241,7 +251,7 @@ public class ListarPessoas extends JFrame {
 			txtDataTermino.setText(resultado[4]);
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(null,"Erro em atualizar dados da tarefa.",nomeJanela,errorDanger);
+			JOptionPane.showMessageDialog(null,"Erro ao atualizar dados da tarefa.",nomeJanela,errorDanger);
 		}
 	}
 	
