@@ -16,10 +16,12 @@ import javax.swing.JTextField;
 
 import controller.JdbUtil;
 import controller.PessoasJdbcDAO;
+import controller.Rel_tarefa_pessoaJdbcDAO;
 import controller.TarefasJdbcDAO;
 
 public class ListarPessoas extends JFrame {
 	int i = 0;
+	String email = "";
 	static String nomeJanela = "Listar Pessoas";
 	static int errorDanger = 0;
 	static int errorInformation = 1;
@@ -157,7 +159,8 @@ public class ListarPessoas extends JFrame {
 		
 		cbPessoas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				attPessoa(cbPessoas.getSelectedItem().toString());
+				email = cbPessoas.getSelectedItem().toString();
+				attPessoa(email);
 			}
 		});
 		
@@ -201,8 +204,8 @@ public class ListarPessoas extends JFrame {
 			txtEmail.setText(resultado[1]);
 			txtSexo.setText(resultado[2]);
 			
-			attTarefas(resultado[1]);
-
+			attTarefas(email);
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			JOptionPane.showMessageDialog(null,"Erro ao atualizar dados da pessoa.",nomeJanela,errorDanger);
@@ -216,24 +219,38 @@ public class ListarPessoas extends JFrame {
 			TarefasJdbcDAO tar = new TarefasJdbcDAO(connection);
 			
 			i = 0;
-			for ( String titulo: tar.listarTarPessoa(email) ) {
+			for ( String id: tar.listarTarPessoa(email) ) {
 				cbTarefas.addItem(tar.listarTarPessoa(email).get(i));
 				i++;
 			}
 			
 			attTarefa(Integer.parseInt( cbTarefas.getSelectedItem().toString() ));
 		} catch (java.lang.NullPointerException ex) {
-			ex.printStackTrace();
-			JOptionPane.showMessageDialog(null,"Não há tarefas.",nomeJanela,errorMissing);
-			
-			txtTitulo.setText("");
-			txtPrazoEstimado.setText("");
-			txtDescricaoTarefa.setText("");
-			txtDataInicio.setText("");
-			txtDataTermino.setText("");
+			try {
+				Connection connection = JdbUtil.getConnection();
+				PessoasJdbcDAO pes = new PessoasJdbcDAO(connection);
+				Rel_tarefa_pessoaJdbcDAO rel = new Rel_tarefa_pessoaJdbcDAO(connection);
+				
+				String[] inf = pes.retornarInfPessoa((String) email);
+				int resultado = rel.verificarPessoa(Integer.parseInt(inf[3]));
+				
+				if (resultado > 0) {
+					attTarefas(email);
+				} else {
+					txtTitulo.setText("");
+					txtPrazoEstimado.setText("");
+					txtDescricaoTarefa.setText("");
+					txtDataInicio.setText("");
+					txtDataTermino.setText("");
+					JOptionPane.showMessageDialog(null,"Não há tarefas com essa pessoa.", nomeJanela, errorMissing);
+					throw new Exception("Não há tarefas com essa pessoa.");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(null,"Erro ao atualizar CB.TAREFAS.",nomeJanela,errorDanger);
+			JOptionPane.showMessageDialog(null,"Erro ao atualizar CB.TAREFAS.", nomeJanela, errorDanger);
 		}
 	}
 	

@@ -52,6 +52,18 @@ public class Rel_tarefa_pessoaJdbcDAO {
 		return resultado;
 	}
 	
+	public int verificarPessoa(int pessoa) throws SQLException {
+		String sql = "select * from rel_tarefa_pessoa where id_pessoa = " + pessoa + ";";
+        System.out.println(sql);
+		PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
+		ResultSet rs = prepareStatement.executeQuery();
+		rs.next();
+		int resultado = rs.getRow();
+		rs.close();
+        prepareStatement.close();
+		return resultado;
+	}
+	
 	public List<String> listarPessoas(int id) throws SQLException {
 		String sql = "select p.id, p.nome, p.email from pessoa as p inner join rel_tarefa_pessoa as r on r.id_pessoa = p.id where r.id_tarefa = " + id;
         System.out.println(sql);		
