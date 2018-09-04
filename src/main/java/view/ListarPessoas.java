@@ -21,7 +21,6 @@ import controller.TarefasJdbcDAO;
 
 public class ListarPessoas extends JFrame {
 	int i = 0;
-	String email = "";
 	static String nomeJanela = "Listar Pessoas";
 	static int errorDanger = 0;
 	static int errorInformation = 1;
@@ -159,8 +158,7 @@ public class ListarPessoas extends JFrame {
 		
 		cbPessoas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				email = cbPessoas.getSelectedItem().toString();
-				attPessoa(email);
+				attPessoa(cbPessoas.getSelectedItem().toString());
 			}
 		});
 		
@@ -225,7 +223,7 @@ public class ListarPessoas extends JFrame {
 			}
 			
 			attTarefa(Integer.parseInt( cbTarefas.getSelectedItem().toString() ));
-		} catch (java.lang.NullPointerException ex) {
+		} catch (NullPointerException ex) {
 			try {
 				Connection connection = JdbUtil.getConnection();
 				PessoasJdbcDAO pes = new PessoasJdbcDAO(connection);
@@ -259,7 +257,7 @@ public class ListarPessoas extends JFrame {
 			Connection connection = JdbUtil.getConnection();
 			TarefasJdbcDAO tDAO = new TarefasJdbcDAO(connection);
 
-			String[] resultado = tDAO.retornarInfTarefa( Integer.parseInt( cbTarefas.getSelectedItem().toString() ) );
+			String[] resultado = tDAO.retornarInfTarefa(id);
 
 			txtTitulo.setText(resultado[0]);
 			txtPrazoEstimado.setText(resultado[1]);

@@ -1,12 +1,21 @@
 package view;
 
 import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import controller.JdbUtil;
+import controller.PessoasJdbcDAO;
+import controller.Rel_tarefa_pessoaJdbcDAO;
+import controller.TarefasJdbcDAO;
 
 public class AppRelacoes extends JFrame {
 	int i = 0;
@@ -19,9 +28,9 @@ public class AppRelacoes extends JFrame {
 	JPanel panelRelacoes = new JPanel();
 	JPanel panelDados = new JPanel();
 	
-	JLabel lblRelacoes = new JLabel("Relação: ");
+	JLabel lblRelacoes = new JLabel("Pessoa: ");
 	
-	JComboBox<String> cbRelacoes = new JComboBox<String>();
+	JComboBox<String> cbPessoas = new JComboBox<String>();
 	
 	JButton deletar = new JButton("Excluir");
 	JButton editar = new JButton("Editar");
@@ -45,9 +54,7 @@ public class AppRelacoes extends JFrame {
 	JLabel txtDescricaoTarefa = new JLabel();
 	JLabel txtDataInicio = new JLabel();
 	JLabel txtDataTermino = new JLabel();
-	
-	
-	
+
 	public AppRelacoes() {
 		super(nomeJanela);
 		Container paine = this.getContentPane();
@@ -73,14 +80,14 @@ public class AppRelacoes extends JFrame {
 		panelRelacoes.setBounds		(15, 10, larguraPanel, alturaPanel);
 		
 		lblRelacoes.setBounds		(distanciaLateral, distanciaSuperior*1, largura, altura);
-		cbRelacoes.setBounds		(distanciaTXT, distanciaSuperior*1, largura, altura);
+		cbPessoas.setBounds			(distanciaTXT, distanciaSuperior*1, largura, altura);
 		
 		editar.setBounds			(distanciaLateral, distanciaSuperior*9+altura, largura, altura);
 		deletar.setBounds			(distanciaTXT, distanciaSuperior*9+altura, largura, altura);
 		cadastrar.setBounds 		(distanciaLateral, distanciaSuperior*10+altura, largura*2+distanciaLateral-g, altura);
 		
 		panelRelacoes.add(lblRelacoes);
-		panelRelacoes.add(cbRelacoes);
+		panelRelacoes.add(cbPessoas);
 		
 		panelRelacoes.add(editar);
 		panelRelacoes.add(deletar);
@@ -124,15 +131,108 @@ public class AppRelacoes extends JFrame {
 		panelDados.add(cbTarefas);
 
 		panelRelacoes.add(panelDados);
-
-		
+	
 		paine.add(panelRelacoes);
+		
+		attPessoas();
+		
+		cbPessoas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				attTarefas(cbPessoas.getSelectedItem().toString());
+			}
+		});
+		
+		cbTarefas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				attTarefa(Integer.parseInt( cbTarefas.getSelectedItem().toString()) );
+			}
+		});
 		
 		this.setResizable(false);
 		this.setVisible(true);
 		this.setSize(janelaLargura, janelaAltura);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setLocationRelativeTo(null);
+	}
+	
+	public void attPessoas() {
+		try {
+			cbPessoas.removeAllItems();
+			Connection connection = JdbUtil.getConnection();
+			PessoasJdbcDAO pes = new PessoasJdbcDAO(connection);
+			
+			i = 0;
+			for ( String titulo: pes.listar() ) {
+				cbPessoas.addItem(pes.listar().get(i));
+				i++;
+			}
+			
+			attTarefas(cbPessoas.getSelectedItem().toString());
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null,"Erro ao atualizar CB.PESSOAS.",nomeJanela,errorDanger);
+		}
+	}
+	
+	public void attTarefas(String email) {
+		try {
+			cbTarefas.removeAllItems();
+			Connection connection = JdbUtil.getConnection();
+			TarefasJdbcDAO tar = new TarefasJdbcDAO(connection);
+			
+			i = 0;
+			for ( String id: tar.listarTarPessoa(email) ) {
+				cbTarefas.addItem(tar.listarTarPessoa(email).get(i));
+				i++;
+			}
+			
+			attTarefa(Integer.parseInt( cbTarefas.getSelectedItem().toString() ));
+		} catch (java.lang.NullPointerException ex) {
+			try {
+				Connection connection = JdbUtil.getConnection();
+				PessoasJdbcDAO pes = new PessoasJdbcDAO(connection);
+				Rel_tarefa_pessoaJdbcDAO rel = new Rel_tarefa_pessoaJdbcDAO(connection);
+				
+				String[] inf = pes.retornarInfPessoa((String) email);
+				int resultado = rel.verificarPessoa(Integer.parseInt(inf[3]));
+				
+				if (resultado > 0) {
+					attTarefas(email);
+				} else {
+					txtTitulo.setText("");
+					txtPrazoEstimado.setText("");
+					txtDescricaoTarefa.setText("");
+					txtDataInicio.setText("");
+					txtDataTermino.setText("");
+					JOptionPane.showMessageDialog(null,"Não há tarefas com essa pessoa.", nomeJanela, errorMissing);
+					throw new Exception("Não há tarefas com essa pessoa.");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null,"Erro ao atualizar CB.TAREFAS.", nomeJanela, errorDanger);
+		}
+	}
+	
+	public void attTarefa(int id) {
+		try {
+			Connection connection = JdbUtil.getConnection();
+			TarefasJdbcDAO tDAO = new TarefasJdbcDAO(connection);
+
+			String[] resultado = tDAO.retornarInfTarefa( Integer.parseInt( cbTarefas.getSelectedItem().toString() ) );
+
+			txtTitulo.setText(resultado[0]);
+			txtPrazoEstimado.setText(resultado[1]);
+			txtDescricaoTarefa.setText(resultado[2]);
+			txtDataInicio.setText(resultado[3]);
+			txtDataTermino.setText(resultado[4]);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null,"Erro ao atualizar dados da tarefa.",nomeJanela,errorDanger);
+		}
 	}
 	
 	public static void main(String [] args) {
