@@ -1,9 +1,6 @@
 package view;
 
 import java.awt.Container;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -22,13 +19,19 @@ public class AppRelacoes extends JFrame {
 	JPanel panelRelacoes = new JPanel();
 	JPanel panelDados = new JPanel();
 	
-	JLabel lblRelacoes = new JLabel("Relações: ");
+	JLabel lblRelacoes = new JLabel("Relação: ");
+	
 	JComboBox<String> cbRelacoes = new JComboBox<String>();
+	
+	JButton deletar = new JButton("Excluir");
+	JButton editar = new JButton("Editar");
+	JButton cadastrar = new JButton("Cadastrar");
 
-	//   <--------->
-	// 	 <-TAREFAS->
-	//   <--------->
-	JLabel lblTarefas = new JLabel("Tarefas: ");
+	//   <-------->
+	// 	 <-TAREFA->
+	//   <-------->
+	JLabel lblTarefas = new JLabel("Tarefa: ");
+	
 	JComboBox<String> cbTarefas = new JComboBox<String>();
 	
 	JLabel lblTitulo = new JLabel("Título: ");
@@ -43,11 +46,8 @@ public class AppRelacoes extends JFrame {
 	JLabel txtDataInicio = new JLabel();
 	JLabel txtDataTermino = new JLabel();
 	
-	JButton deletar = new JButton("Excluir");
-	JButton editar = new JButton("Editar");
 	
-	JButton cadastrar = new JButton("Cadastrar");
-
+	
 	public AppRelacoes() {
 		super(nomeJanela);
 		Container paine = this.getContentPane();
@@ -65,9 +65,9 @@ public class AppRelacoes extends JFrame {
 			janelaAltura = alturaPanel+distanciaSuperior*2-g/2,
 			janelaLargura = (larguraPanel+distanciaLateral*2-g/4)-2;
 		
-		//   <--------->
-		// 	 <-RELAÇÃO->
-		//   <--------->
+		//   <------------->
+		// 	 <-METODOLOGIA->
+		//   <------------->
 		panelRelacoes.setLayout(null);
 		panelRelacoes.setBorder(javax.swing.BorderFactory.createTitledBorder(nomeJanela));
 		panelRelacoes.setBounds		(15, 10, larguraPanel, alturaPanel);
@@ -91,7 +91,7 @@ public class AppRelacoes extends JFrame {
 		//   <------->
 		panelDados.setLayout(null);
 		panelDados.setBorder(javax.swing.BorderFactory.createTitledBorder("Dados Tarefas"));
-		panelDados.setBounds			(distanciaLateral, distanciaSuperior*2, largura*2+distanciaLateral-g, altura*12);
+		panelDados.setBounds			(distanciaLateral, distanciaSuperior*2, largura*2+distanciaLateral-g, altura*11);
 
 		lblTarefas.setBounds			(distanciaLateral, distanciaSuperior*1, largura-g*2, altura);
 		cbTarefas.setBounds				(distanciaTXT-g*2, distanciaSuperior*1, largura-g*2, altura);
@@ -107,9 +107,6 @@ public class AppRelacoes extends JFrame {
 		txtDescricaoTarefa.setBounds	(distanciaTXT, distanciaSuperior*4, largura, altura);	
 		txtDataInicio.setBounds			(distanciaTXT, distanciaSuperior*5, largura, altura);
 		txtDataTermino.setBounds		(distanciaTXT, distanciaSuperior*6, largura, altura);
-		
-		editar.setBounds				(distanciaLateral, distanciaSuperior*7, largura-g*2, altura);
-		deletar.setBounds				(distanciaTXT-g*2, distanciaSuperior*7, largura-g*2, altura);
 
 		panelDados.add(lblTarefas);
 		panelDados.add(lblTitulo);
@@ -123,12 +120,11 @@ public class AppRelacoes extends JFrame {
 		panelDados.add(txtDescricaoTarefa);
 		panelDados.add(txtDataInicio);
 		panelDados.add(txtDataTermino);
-		
-		panelDados.add(editar);
-		panelDados.add(deletar);
+
 		panelDados.add(cbTarefas);
 
 		panelRelacoes.add(panelDados);
+
 		
 		paine.add(panelRelacoes);
 		
@@ -138,8 +134,6 @@ public class AppRelacoes extends JFrame {
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 	}
-	
-
 	
 	public static void main(String [] args) {
 		AppRelacoes a = new AppRelacoes();

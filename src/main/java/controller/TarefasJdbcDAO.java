@@ -19,7 +19,7 @@ public class TarefasJdbcDAO {
 	}
 	
 	public void salvar(Tarefas c) throws SQLException {
-		String sql = "insert into tarefa (titulo, prazo_estimado, descricao, data_inicio, data_termino) values ('"+c.getTitulo()+"','"+c.getPrazo_estimado()+"','"+c.getDescricao()+"','"+c.getData_inicio()+"','"+c.getData_termino()+"')";
+		String sql = "insert into tarefa (titulo, prazo_estimado, descricao, data_inicio, data_termino) values ('"+c.getTitulo()+"', '"+c.getPrazo_estimado()+"', '"+c.getDescricao()+"', '"+c.getData_inicio()+"', '"+c.getData_termino()+"')";
 		System.out.println(sql);
 		PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
 		prepareStatement.executeUpdate();
@@ -27,7 +27,7 @@ public class TarefasJdbcDAO {
 	}
 	
 	public void alterar(Tarefas c) throws SQLException {
-		String sql = "update tarefa set titulo='"+c.getTitulo()+"',prazo_estimado='"+c.getPrazo_estimado()+"',descricao='"+c.getDescricao()+"',data_inicio='"+c.getData_inicio()+"',data_termino='"+c.getData_termino()+" where id = "+c.getId()+";";
+		String sql = "update tarefa set titulo='"+c.getTitulo()+"', prazo_estimado='"+c.getPrazo_estimado()+"', descricao='"+c.getDescricao()+"', data_inicio='"+c.getData_inicio()+"', data_termino='"+c.getData_termino()+" where id = "+c.getId()+";";
 		System.out.println(sql);
 		PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
 		prepareStatement.executeUpdate();
@@ -35,7 +35,7 @@ public class TarefasJdbcDAO {
 	}
 	
 	public void deletar(int id) throws SQLException {
-		String sql = "delete from tarefa where id = " + id;
+		String sql = "delete from tarefa where id = " + id + ";";
 		System.out.println(sql);
 		PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
 		prepareStatement.executeUpdate();
@@ -72,7 +72,7 @@ public class TarefasJdbcDAO {
 	}
 	
 	public String[] retornarInfTarefa(int id_tarefa) throws SQLException {
-		String sql = "select * from tarefa where id = '" + id_tarefa + "';";
+		String sql = "select * from tarefa where id = " + id_tarefa + ";";
         System.out.println(sql);
 		PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
 		ResultSet rs = prepareStatement.executeQuery();
@@ -89,5 +89,22 @@ public class TarefasJdbcDAO {
 		prepareStatement.close();
 		
 		return informacoes;
+	}
+	
+	public List<String> listarTarPessoa(String email) throws SQLException {
+		String sql = "select id_tarefa from rel_tarefa_pessoa as r join pessoa as p on r.id_pessoa = p.id and p.email = '" + email + "';";
+        System.out.println(sql);		 
+        List<String> Tarefas = new ArrayList<String>();
+		
+		PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
+		ResultSet rs = prepareStatement.executeQuery();
+		while(rs.next()) {
+			String idTarefa = rs.getString("id_tarefa");
+			Tarefas.add(idTarefa);
+		}
+		rs.close();
+		prepareStatement.close();
+		
+		return Tarefas;
 	}
 }
