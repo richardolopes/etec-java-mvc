@@ -179,7 +179,7 @@ public class AppRelacoes extends JFrame {
 		
 		adicionarRelacao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CadastrarRelTarefaPessoa adicionarRelTarefa = new CadastrarRelTarefaPessoa(Integer.parseInt( cbTarefas.getSelectedItem().toString() ));
+				CadastrarRelTarefaPessoa adicionarRelTarefa = new CadastrarRelTarefaPessoa(Integer.parseInt( cbTarefas.getSelectedItem().toString() ), "AppRelacoes");
 				dispose();
 			}
 		});

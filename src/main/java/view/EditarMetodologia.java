@@ -94,6 +94,8 @@ public class EditarMetodologia extends JFrame {
 				//if (JOptionPane.showConfirmDialog(null,"Deseja sair?") == JOptionPane.OK_OPTION){
 				if(appMet) {
 					AppMetodologias a = new AppMetodologias();
+				} else {
+					AppTarefas a = new AppTarefas();
 				}
 				//}
 			}

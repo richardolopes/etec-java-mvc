@@ -38,7 +38,7 @@ public class CadastrarRelTarefaPessoa extends JFrame {
 	
 	JButton novoCadastro = new JButton("Cadastrar");
 	
-	public CadastrarRelTarefaPessoa(int id) {
+	public CadastrarRelTarefaPessoa(int id, final String janela) {
 		super(nomeJanela);
 		Container paine = this.getContentPane();
 		paine.setLayout(null);
@@ -96,7 +96,12 @@ public class CadastrarRelTarefaPessoa extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
 				//if (JOptionPane.showConfirmDialog(null,"Deseja sair?") == JOptionPane.OK_OPTION){
+				if (janela == "AppTarefas") {
+					AppTarefas a = new AppTarefas();
+				} else {
 					AppRelacoes a = new AppRelacoes();
+				}
+					
 				//}
 			}
 		});
@@ -146,6 +151,6 @@ public class CadastrarRelTarefaPessoa extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		CadastrarRelTarefaPessoa a = new CadastrarRelTarefaPessoa(4);
+		CadastrarRelTarefaPessoa a = new CadastrarRelTarefaPessoa(4, "AppTarefas");
 	}
 }

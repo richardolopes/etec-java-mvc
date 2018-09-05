@@ -14,6 +14,7 @@ import javax.swing.text.MaskFormatter;
 
 import controller.JdbUtil;
 import controller.MetodologiaJdbcDAO;
+import controller.Rel_tarefa_pessoaJdbcDAO;
 import controller.TarefasJdbcDAO;
 import model.Metodologia;
 import model.Tarefas;
@@ -23,16 +24,13 @@ import javax.swing.JFormattedTextField;
 
 import java.awt.event.ActionEvent;
 
-public class CadastrarTarefas extends JFrame {
-	static String nomeJanela = "Criar Tarefas";
+public class EditarTarefa extends JFrame {
+	static String nomeJanela = "Editar Tarefa";
 	
 	JPanel panelTarefa = new JPanel();
 	
 	JLabel lblNomeTarefa = new JLabel("Nome da tarefa: ");
 	JTextField txtNomeTarefa = new JTextField();
-	
-	JLabel lblMetodologia = new JLabel("Metodologia: ");
-	JTextField txtMetodologia = new JTextField();
 
 	JLabel lblDescricaoTarefa = new JLabel("Descrição: ");
 	JTextField txtDescricaoTarefa = new JTextField();
@@ -46,10 +44,12 @@ public class CadastrarTarefas extends JFrame {
 	JLabel lblDataTermino = new JLabel("Data de término (AAAA-MM-DD): ");
 	JFormattedTextField txtDataTermino = new JFormattedTextField();
 
-	JButton novoCadastro = new JButton("Cadastrar");
+	JButton editarTarefa = new JButton("Editar Tarefa");
+	JButton editarMetodologia = new JButton("Editar Metodologia");
 	
-	public CadastrarTarefas() {
-		super("Cadastro de Tarefas");
+	
+	public EditarTarefa(final int id) {
+		super(nomeJanela);
 		Container paine = this.getContentPane();
 		paine.setLayout(null);
 		int g = 10,
@@ -75,35 +75,33 @@ public class CadastrarTarefas extends JFrame {
 		
 		lblNomeTarefa.setBounds			(distanciaLateral, distanciaSuperior*1, largura, altura);
 		lblDescricaoTarefa.setBounds	(distanciaLateral, distanciaSuperior*2, largura, altura);
-		lblMetodologia.setBounds		(distanciaLateral, distanciaSuperior*3, largura, altura);
-		lblPrazoEstimado.setBounds		(distanciaLateral, distanciaSuperior*4, largura*2, altura);
-		lblDataInicio.setBounds			(distanciaLateral, distanciaSuperior*5, largura*2, altura);
-		lblDataTermino.setBounds		(distanciaLateral, distanciaSuperior*6, largura*2, altura);
+		lblPrazoEstimado.setBounds		(distanciaLateral, distanciaSuperior*3, largura*2, altura);
+		lblDataInicio.setBounds			(distanciaLateral, distanciaSuperior*4, largura*2, altura);
+		lblDataTermino.setBounds		(distanciaLateral, distanciaSuperior*5, largura*2, altura);
 
 		txtNomeTarefa.setBounds			(distanciaTXT, distanciaSuperior*1, largura, altura);
 		txtDescricaoTarefa.setBounds	(distanciaTXT, distanciaSuperior*2, largura, altura);
-		txtMetodologia.setBounds		(distanciaTXT, distanciaSuperior*3, largura, altura);
-		txtPrazoEstimado.setBounds		(distanciaTXT+distanciaLateral*4+g/4, distanciaSuperior*4, 67, altura);
-		txtDataInicio.setBounds			(distanciaTXT+distanciaLateral*4+g/4, distanciaSuperior*5, 67, altura);
-		txtDataTermino.setBounds		(distanciaTXT+distanciaLateral*4+g/4, distanciaSuperior*6, 67, altura);
+		txtPrazoEstimado.setBounds		(distanciaTXT+distanciaLateral*4+g/4, distanciaSuperior*3, 67, altura);
+		txtDataInicio.setBounds			(distanciaTXT+distanciaLateral*4+g/4, distanciaSuperior*4, 67, altura);
+		txtDataTermino.setBounds		(distanciaTXT+distanciaLateral*4+g/4, distanciaSuperior*5, 67, altura);
 
-		novoCadastro.setBounds			(distanciaLateral, distanciaSuperior*8, largura, altura);
+		editarTarefa.setBounds			(distanciaLateral, distanciaSuperior*8, largura, altura);
+		editarMetodologia.setBounds		(distanciaTXT, distanciaSuperior*8, largura, altura);
 		
 		panelTarefa.add(lblNomeTarefa);
 		panelTarefa.add(lblPrazoEstimado);
 		panelTarefa.add(lblDescricaoTarefa);
-		panelTarefa.add(lblMetodologia);
 		panelTarefa.add(lblDataInicio);
 		panelTarefa.add(lblDataTermino);
 		
 		panelTarefa.add(txtNomeTarefa);
 		panelTarefa.add(txtPrazoEstimado);
 		panelTarefa.add(txtDescricaoTarefa);
-		panelTarefa.add(txtMetodologia);
 		panelTarefa.add(txtDataInicio);
 		panelTarefa.add(txtDataTermino);
 		
-		panelTarefa.add(novoCadastro);
+		panelTarefa.add(editarTarefa);
+		panelTarefa.add(editarMetodologia);
 		
 		paine.add(panelTarefa);
 		
@@ -122,44 +120,21 @@ public class CadastrarTarefas extends JFrame {
 		} catch (ParseException e1) {
 			e1.printStackTrace();
 		}
-		
-		
-		
-		
-		novoCadastro.addActionListener(new ActionListener() {
+
+		editarTarefa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tarefas tarefa1 = new Tarefas();
-				Metodologia metodologia1 = new Metodologia();
-				
-				if (!txtNomeTarefa.getText().isEmpty() && !txtPrazoEstimado.getText().isEmpty() && !txtDataInicio.getText().isEmpty()) {
-					try {
-						Connection connection = JdbUtil.getConnection();
-						TarefasJdbcDAO tarefasJdbcDAO = new TarefasJdbcDAO(connection);
-						MetodologiaJdbcDAO metodologiaJdbcDAO = new MetodologiaJdbcDAO(connection);
-
-						tarefa1.setTitulo(txtNomeTarefa.getText());
-						tarefa1.setPrazo_estimado(txtPrazoEstimado.getText());
-						tarefa1.setDescricao(txtDescricaoTarefa.getText());
-						tarefa1.setData_inicio(txtDataInicio.getText());
-						tarefa1.setData_termino(txtDataTermino.getText());
-						
-						tarefasJdbcDAO.salvar(tarefa1);
-					
-						metodologia1.setId(tarefasJdbcDAO.ultimaTarefa());
-						metodologia1.setTitulo(txtMetodologia.getText());
-
-						metodologiaJdbcDAO.salvar(metodologia1);
-						
-						JOptionPane.showMessageDialog(null,"Cadastro da tarefa " + tarefasJdbcDAO.ultimaTarefa() + " realizado com sucesso.",nomeJanela, JOptionPane.INFORMATION_MESSAGE);
-						CadastrarRelTarefaPessoa reltarefapessoa = new CadastrarRelTarefaPessoa(tarefasJdbcDAO.ultimaTarefa(), "AppTarefas");
-						dispose();
-					} catch(Exception ex) {
-						JOptionPane.showMessageDialog(null,"Erro",nomeJanela, JOptionPane.CLOSED_OPTION);
-						ex.printStackTrace();
-					}
+				if (txtNomeTarefa.getText().isEmpty() || txtDescricaoTarefa.getText().isEmpty() || txtPrazoEstimado.getText().isEmpty() || txtDataInicio.getText().isEmpty() || txtDataTermino.getText().isEmpty()) {
+					System.out.println("Preencha todos os campos.");
 				} else {
-					JOptionPane.showMessageDialog(null,"Preencha todos os campos",nomeJanela, JOptionPane.CLOSED_OPTION);
+					tarefa(id);
 				}
+			}
+		});
+		
+		editarMetodologia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EditarMetodologia a = new EditarMetodologia(id, false);
+				dispose();
 			}
 		});
 		
@@ -171,8 +146,63 @@ public class CadastrarTarefas extends JFrame {
 		this.setLocationRelativeTo(null);
 	}
 	
+	public void tarefa(int idTarefa) {
+		try {
+			Connection connection = JdbUtil.getConnection();
+			TarefasJdbcDAO tar = new TarefasJdbcDAO(connection);
+			
+			String[] tarefa = tar.retornarInfTarefa(idTarefa);
+			
+			txtNomeTarefa.setText(tarefa[0]);
+			txtDescricaoTarefa.setText(tarefa[2]);
+			txtPrazoEstimado.setText(tarefa[1]);
+			txtDataInicio.setText(tarefa[3]);
+			txtDataTermino.setText(tarefa[4]);
+		} catch (Exception ex) {
+			
+			ex.printStackTrace();
+		}
+	}
+	
+	public void editarTarefa(int id, String titulo, String descricao, String datainicio, String datatermino) {
+		try {
+			Connection connection = JdbUtil.getConnection();
+			TarefasJdbcDAO tar = new TarefasJdbcDAO(connection);
+			Tarefas tarefa = new Tarefas();
+			
+			tarefa.setId(id);
+			tarefa.setTitulo(titulo);
+			tarefa.setDescricao(descricao);
+			tarefa.setData_inicio(datainicio);
+			tarefa.setData_termino(datatermino);
+			
+			tar.alterar(tarefa);
+			AppTarefas a = new AppTarefas();
+			dispose();
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null,"Erro.",nomeJanela, JOptionPane.INFORMATION_MESSAGE);
+			ex.printStackTrace();
+		}
+	}
+	
+	public void visibilidade(boolean a) {
+		lblNomeTarefa.setVisible(a);
+		lblDescricaoTarefa.setVisible(a);
+		lblPrazoEstimado.setVisible(a);
+		lblDataInicio.setVisible(a);
+		lblDataTermino.setVisible(a);
+		
+		txtNomeTarefa.setVisible(a);
+		txtDescricaoTarefa.setVisible(a);
+		txtPrazoEstimado.setVisible(a);
+		txtDataInicio.setVisible(a);
+		txtDataTermino.setVisible(a);
+		
+		editarTarefa.setVisible(a);
+		editarMetodologia.setVisible(a);
+	}
 	
 	public static void main(String[] args) {
-		CadastrarTarefas janela = new CadastrarTarefas();
+		EditarTarefa janela = new EditarTarefa(2);
 	}
 }
