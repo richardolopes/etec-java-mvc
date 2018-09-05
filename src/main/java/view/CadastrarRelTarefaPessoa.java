@@ -3,6 +3,8 @@ package view;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 
 import javax.swing.JButton;
@@ -90,6 +92,14 @@ public class CadastrarRelTarefaPessoa extends JFrame {
 				}
 			}
 		});
+		
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent evt) {
+				//if (JOptionPane.showConfirmDialog(null,"Deseja sair?") == JOptionPane.OK_OPTION){
+					AppRelacoes a = new AppRelacoes();
+				//}
+			}
+		});
 
 		this.setResizable(false);
 		this.setVisible(true);
@@ -116,6 +126,9 @@ public class CadastrarRelTarefaPessoa extends JFrame {
 						relTarefaPessoa1.setId_tarefa( idTarefa );
 
 						rel_tarefa_pessoa.salvar(relTarefaPessoa1);
+						
+						
+						txtPessoa.setText("");
 						
 						JOptionPane.showMessageDialog(null,"Relação realizada com sucesso.", nomeJanela, errorInformation);
 					} catch (Exception ex) {

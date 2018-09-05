@@ -110,7 +110,7 @@ public class App extends JFrame {
 						break;
 						
 					case "R":
-						AppRelacoes AppRelacao = new AppRelacoes();
+						ListarPessoas AppRelacao = new ListarPessoas();
 						break;
 					}
 					

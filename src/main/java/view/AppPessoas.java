@@ -161,7 +161,7 @@ public class AppPessoas extends JFrame {
 		
 		listar.addActionListener(new ActionListener( ) {
 			public void actionPerformed(ActionEvent e) {
-				AppRelacoes a = new AppRelacoes();
+				ListarPessoas a = new ListarPessoas();
 			}
 		});
 		
@@ -208,8 +208,8 @@ public class AppPessoas extends JFrame {
 				visibilidade(true);
 				
 			} else {
-				JOptionPane.showMessageDialog(null,"E-mail não encontrado.", nomeJanela, errorMissing);
 				visibilidade(false);
+				JOptionPane.showMessageDialog(null,"E-mail não encontrado.", nomeJanela, errorMissing);
 			}
 			
 		} catch (Exception ex) {
@@ -269,35 +269,19 @@ public class AppPessoas extends JFrame {
 	}
 	
 	public void visibilidade(boolean visible) {
-		if (visible) {
-			lblNome.setVisible(true);
-			lblEmail.setVisible(true);
-			lblSexo.setVisible(true);
-			
-			txtNome.setVisible(true);
-			txtEmail.setVisible(true);
-			txtSexo.setVisible(true);
-			
-			rbMasculino.setVisible(true);
-			rbFeminino.setVisible(true);
-			
-			deletar.setVisible(true);
-			editar.setVisible(true);
-		} else {
-			lblNome.setVisible(false);
-			lblEmail.setVisible(false);
-			lblSexo.setVisible(false);
-			
-			txtNome.setVisible(false);
-			txtEmail.setVisible(false);
-			txtSexo.setVisible(false);
-			
-			rbMasculino.setVisible(false);
-			rbFeminino.setVisible(false);
-			
-			deletar.setVisible(false);
-			editar.setVisible(false);
-		}
+		lblNome.setVisible(visible);
+		lblEmail.setVisible(visible);
+		lblSexo.setVisible(visible);
+		
+		txtNome.setVisible(visible);
+		txtEmail.setVisible(visible);
+		txtSexo.setVisible(visible);
+		
+		rbMasculino.setVisible(visible);
+		rbFeminino.setVisible(visible);
+		
+		deletar.setVisible(visible);
+		editar.setVisible(visible);
 	}
 	
 	public void limpar() {

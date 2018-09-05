@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import controller.JdbUtil;
 import controller.Rel_tarefa_pessoaJdbcDAO;
 import controller.TarefasJdbcDAO;
+import model.Rel_tarefa_pessoa;
 
 public class Teste {
 
@@ -17,14 +18,20 @@ public class Teste {
 			Connection connection = JdbUtil.getConnection();
 			
 			Rel_tarefa_pessoaJdbcDAO a = new Rel_tarefa_pessoaJdbcDAO(connection);
+			Rel_tarefa_pessoa rel = new Rel_tarefa_pessoa();
 			
+			rel.setId_pessoa(0);
+			rel.setId_tarefa(4);
 			
-		} catch(java.sql.SQLIntegrityConstraintViolationException e) {
-			JOptionPane.showMessageDialog(null,"Há relações com está tarefa.", "Teste", 1);
-			e.printStackTrace();
+			a.salvar(rel);
+			
+		} catch(java.sql.SQLIntegrityConstraintViolationException ex) {
+			ex.printStackTrace();
+			System.out.println("Teste :)");
+		
 		} catch(Exception e) {
 			e.printStackTrace();
-			System.out.println("TESTEa");
+			System.out.println("Grrr");
 		}
 	}
 }
