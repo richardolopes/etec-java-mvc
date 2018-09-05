@@ -11,6 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 import controller.JdbUtil;
 import controller.PessoasJdbcDAO;
@@ -25,24 +27,21 @@ public class AppRelacoes extends JFrame {
 	static int errorWarning = 2;
 	static int errorMissing = 3;
 	
-	JPanel panelRelacoes = new JPanel();
-	JPanel panelDados = new JPanel();
-	
-	JLabel lblRelacoes = new JLabel("Pessoa: ");
-	
-	JComboBox<String> cbPessoas = new JComboBox<String>();
-	
-	JButton deletar = new JButton("Excluir");
-	JButton editar = new JButton("Editar");
-	JButton cadastrar = new JButton("Cadastrar");
+	JPanel panelPessoa = new JPanel();
+	JPanel panelTarefa = new JPanel();
 
-	//   <-------->
-	// 	 <-TAREFA->
-	//   <-------->
-	JLabel lblTarefas = new JLabel("Tarefa: ");
+	JLabel lblEmailPessoa = new JLabel("Pessoas: ");
 	
-	JComboBox<String> cbTarefas = new JComboBox<String>();
+	JLabel lblEmail = new JLabel("E-mail: ");
+	JLabel lblNome = new JLabel("Nome: ");
+	JLabel lblSexo = new JLabel("Sexo: ");
 	
+	JLabel txtEmail = new JLabel("");
+	JLabel txtNome = new JLabel("");
+	JLabel txtSexo = new JLabel("");
+	
+	// Tarefa
+	JLabel lblTarefas = new JLabel("Tarefas: ");
 	JLabel lblTitulo = new JLabel("Título: ");
 	JLabel lblPrazoEstimado = new JLabel("Prazo Estimado: ");
 	JLabel lblDescricaoTarefa = new JLabel("Descrição: ");
@@ -54,6 +53,14 @@ public class AppRelacoes extends JFrame {
 	JLabel txtDescricaoTarefa = new JLabel();
 	JLabel txtDataInicio = new JLabel();
 	JLabel txtDataTermino = new JLabel();
+	
+	JLabel pSemTarefa = new JLabel();
+	JLabel lblID = new JLabel("ID da tarefa:");
+	JTextField txtID = new JTextField();
+	JButton cadastrarRel = new JButton("Adicionar Relação");
+	
+	JComboBox<String> cbTarefas = new JComboBox<String>();
+	JComboBox<String> cbPessoas = new JComboBox<String>();
 
 	public AppRelacoes() {
 		super(nomeJanela);
@@ -67,97 +74,116 @@ public class AppRelacoes extends JFrame {
 			distanciaTXT = largura+g+distanciaLateral,
 			
 			larguraPanel = distanciaLateral+largura+distanciaTXT,
-			alturaPanel = distanciaSuperior*12,
+			alturaPanel = distanciaSuperior*10-altura,
 					
 			janelaAltura = alturaPanel+distanciaSuperior*2-g/2,
-			janelaLargura = (larguraPanel+distanciaLateral*2-g/4)-2;
-		
-		//   <------------->
-		// 	 <-METODOLOGIA->
-		//   <------------->
-		panelRelacoes.setLayout(null);
-		panelRelacoes.setBorder(javax.swing.BorderFactory.createTitledBorder(nomeJanela));
-		panelRelacoes.setBounds		(15, 10, larguraPanel, alturaPanel);
-		
-		lblRelacoes.setBounds		(distanciaLateral, distanciaSuperior*1, largura, altura);
-		cbPessoas.setBounds			(distanciaTXT, distanciaSuperior*1, largura, altura);
-		
-		editar.setBounds			(distanciaLateral, distanciaSuperior*9+altura, largura, altura);
-		deletar.setBounds			(distanciaTXT, distanciaSuperior*9+altura, largura, altura);
-		cadastrar.setBounds 		(distanciaLateral, distanciaSuperior*10+altura, largura*2+distanciaLateral-g, altura);
-		
-		panelRelacoes.add(lblRelacoes);
-		panelRelacoes.add(cbPessoas);
-		
-		panelRelacoes.add(editar);
-		panelRelacoes.add(deletar);
-		panelRelacoes.add(cadastrar);
-		
-		//   <------->
-		// 	 <-DADOS->
-		//   <------->
-		panelDados.setLayout(null);
-		panelDados.setBorder(javax.swing.BorderFactory.createTitledBorder("Dados Tarefas"));
-		panelDados.setBounds			(distanciaLateral, distanciaSuperior*2, largura*2+distanciaLateral-g, altura*11);
+			//janelaAltura = (alturaPanel+distanciaSuperior)*2,
+			
+			//janelaLargura = (larguraPanel+distanciaLateral*2-g-g/3)*2;
+			janelaLargura = ((larguraPanel+distanciaLateral)*2+distanciaLateral-g/2)-2;
 
-		lblTarefas.setBounds			(distanciaLateral, distanciaSuperior*1, largura-g*2, altura);
-		cbTarefas.setBounds				(distanciaTXT-g*2, distanciaSuperior*1, largura-g*2, altura);
+		//   <-------->
+		//   <-PESSOA->
+		//	 <-------->
+		panelPessoa.setLayout(null);
+		panelPessoa.setBorder(javax.swing.BorderFactory.createTitledBorder(nomeJanela));
+		panelPessoa.setBounds			(15, 10, larguraPanel, alturaPanel);
 		
-		lblTitulo.setBounds				(distanciaLateral, distanciaSuperior*2, largura, altura);
-		lblPrazoEstimado.setBounds		(distanciaLateral, distanciaSuperior*3, largura, altura);
-		lblDescricaoTarefa.setBounds	(distanciaLateral, distanciaSuperior*4, largura, altura);
-		lblDataInicio.setBounds			(distanciaLateral, distanciaSuperior*5, largura, altura);
-		lblDataTermino.setBounds		(distanciaLateral, distanciaSuperior*6, largura, altura);
-
-		txtTitulo.setBounds				(distanciaTXT, distanciaSuperior*2, largura, altura);
-		txtPrazoEstimado.setBounds		(distanciaTXT, distanciaSuperior*3, largura, altura);	
-		txtDescricaoTarefa.setBounds	(distanciaTXT, distanciaSuperior*4, largura, altura);	
-		txtDataInicio.setBounds			(distanciaTXT, distanciaSuperior*5, largura, altura);
-		txtDataTermino.setBounds		(distanciaTXT, distanciaSuperior*6, largura, altura);
-
-		panelDados.add(lblTarefas);
-		panelDados.add(lblTitulo);
-		panelDados.add(lblPrazoEstimado);
-		panelDados.add(lblDescricaoTarefa);
-		panelDados.add(lblDataInicio);
-		panelDados.add(lblDataTermino);
+		lblEmailPessoa.setBounds		(distanciaLateral, distanciaSuperior*1, largura, altura);
+		cbPessoas.setBounds				(distanciaTXT, distanciaSuperior*1, largura, altura);
 		
-		panelDados.add(txtTitulo);
-		panelDados.add(txtPrazoEstimado);
-		panelDados.add(txtDescricaoTarefa);
-		panelDados.add(txtDataInicio);
-		panelDados.add(txtDataTermino);
-
-		panelDados.add(cbTarefas);
-
-		panelRelacoes.add(panelDados);
+		lblEmail.setBounds				(distanciaLateral, distanciaSuperior*3, largura, altura);
+		lblNome.setBounds				(distanciaLateral, distanciaSuperior*4, largura, altura);
+		lblSexo.setBounds				(distanciaLateral, distanciaSuperior*5, largura, altura);
+		
+		txtEmail.setBounds				(distanciaTXT, distanciaSuperior*3, largura, altura);
+		txtNome.setBounds				(distanciaTXT, distanciaSuperior*4, largura, altura);
+		txtSexo.setBounds				(distanciaTXT, distanciaSuperior*5, largura, altura);
+		
+		panelPessoa.add(lblEmailPessoa);
+		panelPessoa.add(cbPessoas);
+		
+		panelPessoa.add(lblEmail);
+		panelPessoa.add(lblNome);
+		panelPessoa.add(lblSexo);
+		
+		panelPessoa.add(txtEmail);
+		panelPessoa.add(txtNome);
+		panelPessoa.add(txtSexo);
+		
+		//   <-------->
+		// 	 <-TAREFA->
+		//   <-------->
+		panelTarefa.setLayout(null);
+		panelTarefa.setBorder(javax.swing.BorderFactory.createTitledBorder("Tarefas"));
+		panelTarefa.setBounds			(larguraPanel+15*2, 10, larguraPanel, alturaPanel);
 	
-		paine.add(panelRelacoes);
+		lblTarefas.setBounds			(distanciaLateral, distanciaSuperior*1, largura, altura);
+		lblTitulo.setBounds				(distanciaLateral, distanciaSuperior*3, largura, altura);
+		lblPrazoEstimado.setBounds		(distanciaLateral, distanciaSuperior*4, largura, altura);
+		lblDescricaoTarefa.setBounds	(distanciaLateral, distanciaSuperior*5, largura, altura);
+		lblDataInicio.setBounds			(distanciaLateral, distanciaSuperior*6, largura, altura);
+		lblDataTermino.setBounds		(distanciaLateral, distanciaSuperior*7, largura, altura);
+		
+		cbTarefas.setBounds				(distanciaTXT, distanciaSuperior*1, largura, altura);
+		
+		txtTitulo.setBounds				(distanciaTXT, distanciaSuperior*3, largura, altura);
+		txtPrazoEstimado.setBounds		(distanciaTXT, distanciaSuperior*4, largura, altura);	
+		txtDescricaoTarefa.setBounds	(distanciaTXT, distanciaSuperior*5, largura, altura);	
+		txtDataInicio.setBounds			(distanciaTXT, distanciaSuperior*6, largura, altura);
+		txtDataTermino.setBounds		(distanciaTXT, distanciaSuperior*7, largura, altura);
+		
+		pSemTarefa.setBounds			(distanciaLateral, distanciaSuperior*3, largura*2+distanciaLateral, altura);
+		lblID.setBounds					(distanciaLateral, distanciaSuperior*4, largura, altura);
+		txtID.setBounds					(distanciaTXT, distanciaSuperior*4, largura, altura);
+		cadastrarRel.setBounds			(distanciaLateral, distanciaSuperior*5, largura*2+distanciaLateral, altura);
+	
+		panelTarefa.add(lblTarefas);
+		panelTarefa.add(lblTitulo);
+		panelTarefa.add(lblPrazoEstimado);
+		panelTarefa.add(lblDescricaoTarefa);
+		panelTarefa.add(lblDataInicio);
+		panelTarefa.add(lblDataTermino);
+		
+		panelTarefa.add(pSemTarefa);
+		panelTarefa.add(lblID);
+		panelTarefa.add(txtID);
+		panelTarefa.add(cadastrarRel);
+		
+		panelTarefa.add(txtTitulo);
+		panelTarefa.add(txtPrazoEstimado);
+		panelTarefa.add(txtDescricaoTarefa);
+		panelTarefa.add(txtDataInicio);
+		panelTarefa.add(txtDataTermino);
+		
+		panelTarefa.add(cbTarefas);
+
+		paine.add(panelTarefa);
+		paine.add(panelPessoa);
 		
 		attPessoas();
 		
-		cbPessoas.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				attTarefas(cbPessoas.getSelectedItem().toString());
-			}
-		});
-		
+		// -----
 		cbTarefas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (cbTarefas.getSelectedItem() != null) {
-					attTarefa(Integer.parseInt( cbTarefas.getSelectedItem().toString()) );
+					attTarefa(Integer.parseInt( cbTarefas.getSelectedItem().toString() ));
 				}
 			}
 		});
 		
-		deletar.addActionListener(new ActionListener() {
+		cbPessoas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (cbTarefas.getSelectedItem().toString() != null) {
-					excluirRelacao(Integer.parseInt(cbTarefas.getSelectedItem().toString()), cbPessoas.getSelectedItem().toString());
-				}
+				attPessoa(cbPessoas.getSelectedItem().toString());
 			}
 		});
 		
+		cadastrarRel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("aa");
+			}
+		});
+
 		this.setResizable(false);
 		this.setVisible(true);
 		this.setSize(janelaLargura, janelaAltura);
@@ -177,11 +203,28 @@ public class AppRelacoes extends JFrame {
 				i++;
 			}
 			
-			attTarefas(cbPessoas.getSelectedItem().toString());
-			
+			attPessoa(cbPessoas.getSelectedItem().toString());
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(null,"Erro ao atualizar CB.PESSOAS.",nomeJanela,errorDanger);
+			JOptionPane.showMessageDialog(null,"Erro ao atualizar CB.PESSOAS.", nomeJanela, errorDanger);
+		}
+	}
+	
+	public void attPessoa(String email) {
+		try {
+			Connection connection = JdbUtil.getConnection();
+			PessoasJdbcDAO pDAO = new PessoasJdbcDAO(connection);
+			
+			String[] resultado = pDAO.retornarInfPessoa(email);
+
+			txtNome.setText(resultado[0]);
+			txtEmail.setText(resultado[1]);
+			txtSexo.setText(resultado[2]);
+			
+			attTarefas(email);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null,"Erro ao atualizar dados da pessoa.", nomeJanela, errorDanger);
 		}
 	}
 	
@@ -196,10 +239,14 @@ public class AppRelacoes extends JFrame {
 				cbTarefas.addItem(tar.listarTarPessoa(email).get(i));
 				i++;
 			}
-			
+
 			attTarefa(Integer.parseInt( cbTarefas.getSelectedItem().toString() ));
-		
+			visibilidade(true);
 		} catch (NullPointerException ex) {
+			visibilidade(false);
+			
+			pSemTarefa.setText(txtNome.getText() + " não possui tarefas.");
+			
 			txtTitulo.setText("");
 			txtPrazoEstimado.setText("");
 			txtDescricaoTarefa.setText("");
@@ -207,7 +254,7 @@ public class AppRelacoes extends JFrame {
 			txtDataTermino.setText("");
 			
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(null,"Não existe tarefas com essa pessoa.", nomeJanela, errorMissing);
+			//JOptionPane.showMessageDialog(null,"Não existe tarefas com essa pessoa.", nomeJanela, errorMissing);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			JOptionPane.showMessageDialog(null,"Erro ao atualizar CB.TAREFAS.", nomeJanela, errorDanger);
@@ -219,7 +266,7 @@ public class AppRelacoes extends JFrame {
 			Connection connection = JdbUtil.getConnection();
 			TarefasJdbcDAO tDAO = new TarefasJdbcDAO(connection);
 
-			String[] resultado = tDAO.retornarInfTarefa( Integer.parseInt( cbTarefas.getSelectedItem().toString() ) );
+			String[] resultado = tDAO.retornarInfTarefa(id);
 
 			txtTitulo.setText(resultado[0]);
 			txtPrazoEstimado.setText(resultado[1]);
@@ -232,21 +279,20 @@ public class AppRelacoes extends JFrame {
 		}
 	}
 	
-	public void excluirRelacao(int idTarefa, String email) {
-		try {
-			Connection connection = JdbUtil.getConnection();
-			Rel_tarefa_pessoaJdbcDAO rel = new Rel_tarefa_pessoaJdbcDAO(connection);
-			PessoasJdbcDAO pes = new PessoasJdbcDAO(connection);
-			
-			String[] pessoa = pes.retornarInfPessoa((String) email);
-			
-			//rel.deletar(idTarefa, Integer.parseInt(pessoa[3]));
-			
-			JOptionPane.showMessageDialog(null,"Relação excluida com sucesso.", nomeJanela, errorInformation);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			JOptionPane.showMessageDialog(null,"Erro ao atualizar dados da tarefa.", nomeJanela, errorDanger);
-		}
+	public void visibilidade(boolean a) {
+		cbTarefas.setVisible(a);
+		lblTarefas.setVisible(a);
+		
+		lblTitulo.setVisible(a);
+		lblPrazoEstimado.setVisible(a);
+		lblDescricaoTarefa.setVisible(a);
+		lblDataInicio.setVisible(a);
+		lblDataTermino.setVisible(a);
+		
+		pSemTarefa.setVisible(!a);
+		lblID.setVisible(!a);
+		txtID.setVisible(!a);
+		cadastrarRel.setVisible(!a);
 	}
 	
 	public static void main(String [] args) {

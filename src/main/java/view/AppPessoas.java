@@ -161,7 +161,7 @@ public class AppPessoas extends JFrame {
 		
 		listar.addActionListener(new ActionListener( ) {
 			public void actionPerformed(ActionEvent e) {
-				ListarPessoas a = new ListarPessoas();
+				AppRelacoes a = new AppRelacoes();
 			}
 		});
 		
