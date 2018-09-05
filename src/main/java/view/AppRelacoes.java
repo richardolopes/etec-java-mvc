@@ -144,7 +144,17 @@ public class AppRelacoes extends JFrame {
 		
 		cbTarefas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				attTarefa(Integer.parseInt( cbTarefas.getSelectedItem().toString()) );
+				if (cbTarefas.getSelectedItem() != null) {
+					attTarefa(Integer.parseInt( cbTarefas.getSelectedItem().toString()) );
+				}
+			}
+		});
+		
+		deletar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (cbTarefas.getSelectedItem().toString() != null) {
+					excluirRelacao(Integer.parseInt(cbTarefas.getSelectedItem().toString()), cbPessoas.getSelectedItem().toString());
+				}
 			}
 		});
 		
@@ -188,29 +198,16 @@ public class AppRelacoes extends JFrame {
 			}
 			
 			attTarefa(Integer.parseInt( cbTarefas.getSelectedItem().toString() ));
-		} catch (java.lang.NullPointerException ex) {
-			try {
-				Connection connection = JdbUtil.getConnection();
-				PessoasJdbcDAO pes = new PessoasJdbcDAO(connection);
-				Rel_tarefa_pessoaJdbcDAO rel = new Rel_tarefa_pessoaJdbcDAO(connection);
-				
-				String[] inf = pes.retornarInfPessoa((String) email);
-				int resultado = rel.verificarPessoa(Integer.parseInt(inf[3]));
-				
-				if (resultado > 0) {
-					attTarefas(email);
-				} else {
-					txtTitulo.setText("");
-					txtPrazoEstimado.setText("");
-					txtDescricaoTarefa.setText("");
-					txtDataInicio.setText("");
-					txtDataTermino.setText("");
-					JOptionPane.showMessageDialog(null,"Não há tarefas com essa pessoa.", nomeJanela, errorMissing);
-					throw new Exception("Não há tarefas com essa pessoa.");
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		
+		} catch (NullPointerException ex) {
+			txtTitulo.setText("");
+			txtPrazoEstimado.setText("");
+			txtDescricaoTarefa.setText("");
+			txtDataInicio.setText("");
+			txtDataTermino.setText("");
+			
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null,"Não existe tarefas com essa pessoa.", nomeJanela, errorMissing);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			JOptionPane.showMessageDialog(null,"Erro ao atualizar CB.TAREFAS.", nomeJanela, errorDanger);
@@ -232,6 +229,23 @@ public class AppRelacoes extends JFrame {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			JOptionPane.showMessageDialog(null,"Erro ao atualizar dados da tarefa.",nomeJanela,errorDanger);
+		}
+	}
+	
+	public void excluirRelacao(int idTarefa, String email) {
+		try {
+			Connection connection = JdbUtil.getConnection();
+			Rel_tarefa_pessoaJdbcDAO rel = new Rel_tarefa_pessoaJdbcDAO(connection);
+			PessoasJdbcDAO pes = new PessoasJdbcDAO(connection);
+			
+			String[] pessoa = pes.retornarInfPessoa((String) email);
+			
+			//rel.deletar(idTarefa, Integer.parseInt(pessoa[3]));
+			
+			JOptionPane.showMessageDialog(null,"Relação excluida com sucesso.", nomeJanela, errorInformation);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null,"Erro ao atualizar dados da tarefa.", nomeJanela, errorDanger);
 		}
 	}
 	

@@ -230,7 +230,7 @@ public class ListarPessoas extends JFrame {
 			txtDataTermino.setText("");
 			
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(null,"Não existe tarefas com essa pessoa.", nomeJanela, errorDanger);
+			JOptionPane.showMessageDialog(null,"Não existe tarefas com essa pessoa.", nomeJanela, errorMissing);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			JOptionPane.showMessageDialog(null,"Erro ao atualizar CB.TAREFAS.", nomeJanela, errorDanger);
