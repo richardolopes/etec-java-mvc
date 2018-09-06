@@ -21,7 +21,7 @@ public class Teste {
 			Rel_tarefa_pessoa rel = new Rel_tarefa_pessoa();
 			
 			rel.setId_pessoa(0);
-			rel.setId_tarefa(4);
+			rel.setId_tarefa(3);
 			
 			a.salvar(rel);
 			

@@ -80,4 +80,12 @@ public class Rel_tarefa_pessoaJdbcDAO {
 		
 		return Tarefas;
 	}
+	
+	public void deletarRelacoes(int idTarefa) throws SQLException {
+		String sql = "delete from rel_tarefa_pessoa where id_tarefa = " + idTarefa;
+		System.out.println(sql);
+		PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
+		prepareStatement.executeUpdate();
+		prepareStatement.close();  
+	}
 }

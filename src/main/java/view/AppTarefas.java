@@ -18,6 +18,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import controller.JdbUtil;
+import controller.MetodologiaJdbcDAO;
 import controller.PessoasJdbcDAO;
 import controller.Rel_tarefa_pessoaJdbcDAO;
 import controller.TarefasJdbcDAO;
@@ -247,18 +248,20 @@ public class AppTarefas extends JFrame {
 		try {
 			Connection connection = JdbUtil.getConnection();
 			TarefasJdbcDAO tar = new TarefasJdbcDAO(connection);
+			MetodologiaJdbcDAO metodologia = new MetodologiaJdbcDAO(connection);
+			Rel_tarefa_pessoaJdbcDAO relacao = new Rel_tarefa_pessoaJdbcDAO(connection);
 			
-			tar.deletar(id);
-			JOptionPane.showMessageDialog(null,"Tarefa excluida com sucesso.", nomeJanela, errorInformation);
-		} catch (java.sql.SQLIntegrityConstraintViolationException ex) {
-			JOptionPane.showMessageDialog(null,"Há pessoas relacionadas com essa tarefa.", nomeJanela, errorInformation);
-			
-			int Option = JOptionPane.showConfirmDialog(null, "Deseja ir à relações?",nomeJanela,JOptionPane.YES_NO_OPTION);
+			int Option = JOptionPane.showConfirmDialog(null, "Há pessoas relacionadas com essa tarefa. Deseja excluir todas as relações?", nomeJanela, JOptionPane.YES_NO_OPTION);
 			
             if(Option==JOptionPane.YES_OPTION) {
-				AppRelacoes a = new AppRelacoes();
-				dispose();
+				relacao.deletarRelacoes(id);
+				metodologia.deletar(id);
+				tar.deletar(id);
+				
+				JOptionPane.showMessageDialog(null,"Tarefa excluida com sucesso.", nomeJanela, errorInformation);
             }
+
+			attTarefas();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			//JOptionPane.showMessageDialog(null,"Erro em atualizar CB.TAREFAS.", nomeJanela, errorDanger);
