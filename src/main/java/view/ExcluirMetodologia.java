@@ -79,6 +79,8 @@ JPanel panelMetodologia = new JPanel();
 			public void actionPerformed(ActionEvent e) {
 				if (!txtID.getText().isEmpty()) {
 					excluir( Integer.parseInt(txtID.getText()) );
+					dispose();
+					AppMetodologias a = new AppMetodologias();
 				} else {
 					JOptionPane.showMessageDialog(null,"Digite o ID da tarefa.", nomeJanela, errorMissing);
 				}

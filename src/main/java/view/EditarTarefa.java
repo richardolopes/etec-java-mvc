@@ -121,12 +121,14 @@ public class EditarTarefa extends JFrame {
 			e1.printStackTrace();
 		}
 
+		tarefa(id);
+		
 		editarTarefa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (txtNomeTarefa.getText().isEmpty() || txtDescricaoTarefa.getText().isEmpty() || txtPrazoEstimado.getText().isEmpty() || txtDataInicio.getText().isEmpty() || txtDataTermino.getText().isEmpty()) {
 					System.out.println("Preencha todos os campos.");
 				} else {
-					tarefa(id);
+					editarTarefa(id, txtNomeTarefa.getText(), txtDescricaoTarefa.getText(), txtPrazoEstimado.getText(), txtDataInicio.getText(), txtDataTermino.getText());
 				}
 			}
 		});
@@ -142,7 +144,7 @@ public class EditarTarefa extends JFrame {
 		this.setResizable(false);
 		this.setVisible(true);
 		this.setSize(janelaLargura, janelaAltura);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 	}
 	
@@ -155,16 +157,16 @@ public class EditarTarefa extends JFrame {
 			
 			txtNomeTarefa.setText(tarefa[0]);
 			txtDescricaoTarefa.setText(tarefa[2]);
-			txtPrazoEstimado.setText(tarefa[1]);
-			txtDataInicio.setText(tarefa[3]);
-			txtDataTermino.setText(tarefa[4]);
+			txtPrazoEstimado.setText(replace(tarefa[1]));
+			txtDataInicio.setText(replace(tarefa[3]));
+			txtDataTermino.setText(replace(tarefa[4]));
 		} catch (Exception ex) {
 			
 			ex.printStackTrace();
 		}
 	}
 	
-	public void editarTarefa(int id, String titulo, String descricao, String datainicio, String datatermino) {
+	public void editarTarefa(int id, String titulo, String descricao, String prazo, String datainicio, String datatermino) {
 		try {
 			Connection connection = JdbUtil.getConnection();
 			TarefasJdbcDAO tar = new TarefasJdbcDAO(connection);
@@ -173,6 +175,7 @@ public class EditarTarefa extends JFrame {
 			tarefa.setId(id);
 			tarefa.setTitulo(titulo);
 			tarefa.setDescricao(descricao);
+			tarefa.setPrazo_estimado(prazo);
 			tarefa.setData_inicio(datainicio);
 			tarefa.setData_termino(datatermino);
 			
@@ -200,6 +203,10 @@ public class EditarTarefa extends JFrame {
 		
 		editarTarefa.setVisible(a);
 		editarMetodologia.setVisible(a);
+	}
+	
+	public String replace(String data) {
+		return data.replace("-", "/");
 	}
 	
 	public static void main(String[] args) {

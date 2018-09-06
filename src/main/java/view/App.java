@@ -74,8 +74,7 @@ public class App extends JFrame {
 		btnCRUD.setBounds				(distanciaLateral, distanciaSuperior*1, largura*2-distanciaLateral-g, altura*2-g-g/2);
 		
 		panelCrud.add(btnCRUD);
-		
-		
+
 		gpSelect.add(rbPessoa);
 		gpSelect.add(rbTarefa);
 		gpSelect.add(rbMetodologia);
@@ -85,7 +84,7 @@ public class App extends JFrame {
 		paine.add(panelSelect);
 		
 		rbPessoa.setActionCommand("P");
-		rbTarefa.setActionCommand("R");
+		rbTarefa.setActionCommand("T");
 		rbMetodologia.setActionCommand("M");
 		rbRelacao.setActionCommand("R");
 		
@@ -113,11 +112,8 @@ public class App extends JFrame {
 						AppRelacoes AppRelacao = new AppRelacoes();
 						break;
 					}
-					
 				} else {
-					
 					JOptionPane.showMessageDialog(null,"Nenhum item selecionado.","CRUD", JOptionPane.CLOSED_OPTION);
-					
 				}
 			}
 		});

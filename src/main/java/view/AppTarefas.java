@@ -201,17 +201,17 @@ public class AppTarefas extends JFrame {
 		
 		deletarTarefa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int Option = JOptionPane.showConfirmDialog(null, "Deseja mesmo excluir relação entre "+cbPessoas.getSelectedItem().toString()+" e a tarefa "+cbTarefas.getSelectedItem().toString()+"?",nomeJanela,JOptionPane.YES_NO_OPTION);
+				int Option = JOptionPane.showConfirmDialog(null, "Deseja mesmo excluir essa tarefa?",nomeJanela,JOptionPane.YES_NO_OPTION);
 				
                 if(Option==JOptionPane.YES_OPTION) {
-					
+					excluir(Integer.parseInt(cbTarefas.getSelectedItem().toString()));
                 } 
 			}
 		});
 		
 		editarTarefa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListarPessoas a = new ListarPessoas();
+				EditarTarefa a = new EditarTarefa(Integer.parseInt(cbTarefas.getSelectedItem().toString()));
 			}
 		});
 
@@ -243,6 +243,28 @@ public class AppTarefas extends JFrame {
 		}
 	}
 	
+	public void excluir(int id) {
+		try {
+			Connection connection = JdbUtil.getConnection();
+			TarefasJdbcDAO tar = new TarefasJdbcDAO(connection);
+			
+			tar.deletar(id);
+			JOptionPane.showMessageDialog(null,"Tarefa excluida com sucesso.", nomeJanela, errorInformation);
+		} catch (java.sql.SQLIntegrityConstraintViolationException ex) {
+			JOptionPane.showMessageDialog(null,"Há pessoas relacionadas com essa tarefa.", nomeJanela, errorInformation);
+			
+			int Option = JOptionPane.showConfirmDialog(null, "Deseja ir à relações?",nomeJanela,JOptionPane.YES_NO_OPTION);
+			
+            if(Option==JOptionPane.YES_OPTION) {
+				AppRelacoes a = new AppRelacoes();
+				dispose();
+            }
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			//JOptionPane.showMessageDialog(null,"Erro em atualizar CB.TAREFAS.", nomeJanela, errorDanger);
+		}
+	}
+	
 	public void attTarefas() {
 		try {
 			cbTarefas.removeAllItems();
@@ -255,8 +277,14 @@ public class AppTarefas extends JFrame {
 				i++;
 			}
 			
-			attTarefa();
-			
+			if (cbTarefas.getSelectedItem().toString() != null) {
+				attTarefa();
+			}
+
+		} catch (java.lang.NullPointerException ex) {
+			JOptionPane.showMessageDialog(null,"Não há tarefas cadastradas.", nomeJanela, errorDanger);
+			CadastrarTarefas a = new CadastrarTarefas();
+			dispose();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			JOptionPane.showMessageDialog(null,"Erro em atualizar CB.TAREFAS.", nomeJanela, errorDanger);

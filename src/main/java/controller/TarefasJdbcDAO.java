@@ -27,7 +27,7 @@ public class TarefasJdbcDAO {
 	}
 	
 	public void alterar(Tarefas c) throws SQLException {
-		String sql = "update tarefa set titulo='"+c.getTitulo()+"', prazo_estimado='"+c.getPrazo_estimado()+"', descricao='"+c.getDescricao()+"', data_inicio='"+c.getData_inicio()+"', data_termino='"+c.getData_termino()+" where id = "+c.getId()+";";
+		String sql = "update tarefa set titulo='"+c.getTitulo()+"', prazo_estimado='"+c.getPrazo_estimado()+"', descricao='"+c.getDescricao()+"', data_inicio='"+c.getData_inicio()+"', data_termino='"+c.getData_termino()+"' where id = "+c.getId()+";";
 		System.out.println(sql);
 		PreparedStatement prepareStatement = this.conn.prepareStatement(sql);
 		prepareStatement.executeUpdate();

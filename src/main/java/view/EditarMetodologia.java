@@ -79,6 +79,8 @@ public class EditarMetodologia extends JFrame {
 		
 		txtID.setText(id + "");
 		
+		metodologia(id);
+		
 		editar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!txtMetodologia.getText().isEmpty()) {
@@ -122,6 +124,20 @@ public class EditarMetodologia extends JFrame {
 			
 			JOptionPane.showMessageDialog(null,"Alteração realizada com sucesso.",nomeJanela, errorInformation);
 
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null,"Erro ao atualizar dados da metodologia.",nomeJanela, errorDanger);
+			ex.printStackTrace();
+		}
+	}
+	
+	public void metodologia(int id) {
+		try {
+			Connection connection = JdbUtil.getConnection();
+			MetodologiaJdbcDAO tDAO = new MetodologiaJdbcDAO(connection);
+			
+			String metodologia = tDAO.retornarInfMetodologia(id);
+			
+			txtMetodologia.setText(metodologia);
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(null,"Erro ao atualizar dados da metodologia.",nomeJanela, errorDanger);
 			ex.printStackTrace();
