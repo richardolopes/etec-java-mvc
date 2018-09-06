@@ -117,8 +117,10 @@ public class CadastrarPessoas extends JFrame {
 								}
 
 								pessoasJdbcDao.salvar(pessoa1);
-			
+
 								JOptionPane.showMessageDialog(null,"Cadastro realizado com sucesso.","Cadastro", JOptionPane.INFORMATION_MESSAGE);
+								dispose();
+								CadastrarPessoas a = new CadastrarPessoas();
 							} catch(Exception ex) {
 								JOptionPane.showMessageDialog(null,"Erro ao cadastrar.","Cadastro", JOptionPane.CLOSED_OPTION);
 								ex.printStackTrace();

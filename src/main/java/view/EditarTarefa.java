@@ -26,6 +26,10 @@ import java.awt.event.ActionEvent;
 
 public class EditarTarefa extends JFrame {
 	static String nomeJanela = "Editar Tarefa";
+	static int errorDanger = 0;
+	static int errorInformation = 1;
+	static int errorWarning = 2;
+	static int errorMissing = 3;
 	
 	JPanel panelTarefa = new JPanel();
 	
@@ -180,10 +184,11 @@ public class EditarTarefa extends JFrame {
 			tarefa.setData_termino(datatermino);
 			
 			tar.alterar(tarefa);
+			JOptionPane.showMessageDialog(null,"Alteração realizada com sucesso.", nomeJanela, errorInformation);
 			AppTarefas a = new AppTarefas();
 			dispose();
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null,"Erro.",nomeJanela, JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null,"Erro.", nomeJanela, errorDanger);
 			ex.printStackTrace();
 		}
 	}

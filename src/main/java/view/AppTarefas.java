@@ -213,6 +213,7 @@ public class AppTarefas extends JFrame {
 		editarTarefa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				EditarTarefa a = new EditarTarefa(Integer.parseInt(cbTarefas.getSelectedItem().toString()));
+				dispose();
 			}
 		});
 
@@ -264,7 +265,7 @@ public class AppTarefas extends JFrame {
 			attTarefas();
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			//JOptionPane.showMessageDialog(null,"Erro em atualizar CB.TAREFAS.", nomeJanela, errorDanger);
+			JOptionPane.showMessageDialog(null,"Erro em excluir tarefa.", nomeJanela, errorDanger);
 		}
 	}
 	
