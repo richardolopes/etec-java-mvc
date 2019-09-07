@@ -1,4 +1,4 @@
-# Exercícios Programação de Computadores - ETEC ZL
+# Exercício de Programação de Computadores - ETEC ZL
 Proposta: Criar 4 CRUDs
 
 ## 2018.09.14
@@ -15,6 +15,6 @@ Gerenciador de tarefas
 ![Metodologias](https://raw.githubusercontent.com/richardolopes/etec-java-mvc/master/img/metodologia.png)
 ![Pessoas](https://raw.githubusercontent.com/richardolopes/etec-java-mvc/master/img/pessoa%202.png)
 ![Pessoa X Tarefa](https://raw.githubusercontent.com/richardolopes/etec-java-mvc/master/img/pessoa%20x%20tarefa.png)
-![Pessoas](https://raw.githubusercontent.com/richardolopes/etec-java-mvc/master/img/pessoa.png)
 ![Tarefa X Pessoa](https://raw.githubusercontent.com/richardolopes/etec-java-mvc/master/img/tarefa%20x%20pessoa.png)
 ![Relações](https://raw.githubusercontent.com/richardolopes/etec-java-mvc/master/img/tarefa%20x%20pessoa%202.png)
+![Pessoas](https://raw.githubusercontent.com/richardolopes/etec-java-mvc/master/img/pessoa.png)
